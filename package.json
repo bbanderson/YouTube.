@@ -14,6 +14,7 @@
     "build": "npm run build:server && npm run build:assets && npm run copyAll",
     "prebuild": "rm -rf build",
     "tunnel": "lt --port 4000",
+    "prestart": "npm run build",
     "start": "node build/init.js"
   },
   "browserslist": [
