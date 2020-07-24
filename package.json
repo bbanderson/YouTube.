@@ -15,7 +15,7 @@
     "prebuild": "rm -rf build",
     "tunnel": "lt --port 4000",
     "prestart": "npm run build",
-    "start": "node build/init.js"
+    "start": "PRODUCTION=true node build/init.js"
   },
   "browserslist": [
     "cover 99.5%"

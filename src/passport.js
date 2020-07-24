@@ -20,7 +20,7 @@ passport.use(
     new GithubStrategy({
             clientID: process.env.GithubClientID,
             clientSecret: process.env.GithubClientSecret,
-            callbackURL: `http://localhost:3000${routes.githubCallback}`,
+            callbackURL: `https://still-forest-26224.herokuapp.com${routes.githubCallback}`,
         },
         githubLoginCallback
     )
@@ -44,7 +44,7 @@ passport.use(
     new KakaoStrategy({
         clientID: process.env.KakaoID,
         clientSecret: "", // clientSecret을 사용하지 않는다면 넘기지 말거나 빈 스트링을 넘길 것
-        callbackURL: `http://localhost:3000${routes.kakaoCallback}`
+        callbackURL: `hhttps://still-forest-26224.herokuapp.com${routes.kakaoCallback}`
     }, kakaoLoginCallback)
 )
 
