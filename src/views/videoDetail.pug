@@ -1,0 +1,85 @@
+extends ./templates/layout
+include mixins/videoPlayer
+
+//- block aside
+//-   aside.sidebar
+//-     .menu
+//-         i.fas.fa-home
+//-         span 홈
+//-     .menu
+//-         i.fas.fa-fire
+//-         span 인기
+//-     .menu
+//-         i.fas.fa-film
+//-         span 구독
+//-     .menu
+//-         i.fas.fa-file-video
+//-         span 보관함
+//-     .menu
+//-         i.fas.fa-history
+//-         span 시청기록
+
+block content
+  .video-detail__container
+    .videoPlayer
+      +videoPlayer({
+        src: video.fileUrl
+      })
+    .video__info
+      h5.video__title=video.title
+      .sub_title
+        span.video__views 조회수 #{video.views}회
+        .bullet
+          |•
+        p #{String(video.createdAt).split(" ").slice(0, 4).join(" ")}
+      .video__description
+        .video__description-creator
+          .video__description-creator-col
+            .video__description__avatar
+              if video.creator.avatarUrl
+                img.avatar(src=video.creator.avatarUrl)
+              else
+                .avatar
+
+            .video__description__author
+              if video.creator.name
+                a.author(href=routes.userDetail(video.creator.id))
+                  p=video.creator.name
+              else
+                a.author(href=routes.userDetail(video.creator.id))
+                  p=video.creator.email
+          .video__description-creator-col
+            .video__description-edit
+              if loggedUser && video.creator.id === loggedUser.id
+                button
+                  a(href=routes.editVideo(video.id)) Edit Video
+        p.video__description__text=video.description
+    .video__comments
+      if video.comments.length === 1
+        span.video__comments-number
+          span#jsCommentNumber 1
+          |&nbsp;comment
+      else
+        span.video__comments-number
+          span#jsCommentNumber #{video.comments.length}
+          |&nbsp;comments
+      form.add__comment#jsAddComment
+        if loggedUser
+          input(type="text", id="js-comment", placeholder="Add a comment", autocomplete="off")
+        else
+          input(type="text", id="js-comment", placeholder="Please log in or cannot leave a comment", autocomplete="off", disabled)
+      .comments
+        ul.comments__avatar-list
+          each commentAvatar in commentAvatars
+            li.commentAvatar
+              img(src=commentAvatar, width="50", style="border-radius: 100%;")
+        ul.comments__text-list
+          each comment in video.comments.reverse() 
+            li.commentText
+              //- img(src=comment.creator.avatarUrl)
+              span=comment.text
+              span #{comment.creator._id}
+              span.jsDeleteComment
+                form.delete__comment#jsDeleteComment
+                  input(type="hidden", class="commentID", name="commentID", value=comment.id)
+                  input.deleteBtn(type="submit", value="DELETE")

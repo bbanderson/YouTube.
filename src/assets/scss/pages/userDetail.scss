@@ -1,0 +1,64 @@
+// Avatar
+.user-profile__background {
+    width: 100%;
+    height: 400px;
+}
+
+.user-profile__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 100px;
+
+
+    .identity {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .avatar {
+            width: 100px;
+            border-radius: 100%;
+            margin-right: 20px;
+        }
+
+        .profile__username {
+            font-size: 32px;
+            font-weight: 500;
+        }
+    }
+
+    .edit-buttons {
+        // width: 33%;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        button.user-edit {
+            background-color: #065fd4;
+            height: 40px;
+            padding: 10px 20px;
+            margin-right: 10px;
+
+            &:nth-child(3) {
+                background-color: $dark-red;
+            }
+
+            span {
+                color: white;
+
+            }
+        }
+    }
+}
+
+.uploaded-videos {
+    // display: grid;
+    // max-width: 1000px;
+    // padding: 50px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(250px, 400px));
+    gap: 10px;
+    padding: 20px 50px 50px;
+}

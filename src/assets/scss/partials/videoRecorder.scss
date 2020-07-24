@@ -1,0 +1,15 @@
+.form-container {
+
+
+    .record-container {
+        display: flex;
+        width: 100%;
+        max-width: 320px;
+        margin-bottom: 50px;
+
+        video {
+            background-color: $black;
+            margin-bottom: 20px;
+        }
+    }
+}

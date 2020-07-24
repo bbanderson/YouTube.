@@ -1,0 +1,23 @@
+.row {
+    padding: 50px 50px 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.home-videos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 270px));
+    gap: 20px;
+    padding: 20px 50px 50px;
+
+    // .videoBlock:first-child,
+    // .videoBlock:nth-child(2) {
+    //     grid-column: span 3;
+    // }
+
+    // .videoBlock:nth-child(3),
+    // .videoBlock:nth-child(4),
+    // .videoBlock:nth-child(5) {
+    //     grid-column: span 2;
+    // }
+}

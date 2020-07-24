@@ -1,0 +1,34 @@
+extends ./templates/layout
+include ./mixins/videoBlock
+
+//- block aside
+//-   aside.sidebar
+//-     .menu
+//-         i.fas.fa-home
+//-         span 홈
+//-     .menu
+//-         i.fas.fa-fire
+//-         span 인기
+//-     .menu
+//-         i.fas.fa-film
+//-         span 구독
+//-     .menu
+//-         i.fas.fa-file-video
+//-         span 보관함
+//-     .menu
+//-         i.fas.fa-history
+//-         span 시청기록
+
+block content
+  .row
+    h3 맞춤 동영상
+
+  .home-videos
+    each item in videos
+      +videoBlock({
+        id: item.id,
+        title: item.title,
+        views: item.views,
+        videoFile: item.fileUrl,
+        createdAt: String(item.createdAt).split(" ").slice(0, 4).join(" ")
+      })

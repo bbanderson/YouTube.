@@ -1,0 +1,11 @@
+extends ./templates/layout
+
+block content
+  .join__container
+    form.join(action=routes.join, method="post")
+      input(type="text", name="name", placeholder="Full Name" required)
+      input(type="email", name="email", placeholder="Email" required)
+      input(type="password", name="password", placeholder="Password" required)
+      input(type="password", name="password2", placeholder="Verify Password" required)
+      input(type="submit", value="Join Now" required)
+    include ./partials/socialLogin

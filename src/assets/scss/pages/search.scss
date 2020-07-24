@@ -1,0 +1,80 @@
+.searchContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 50px 50px 0;
+    height: 90vh;
+
+
+
+    .search__header {
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .search__users {
+        .userBlock {
+            padding: 30px 0;
+            margin: 30px 0;
+            border-top: 1px solid rgba($color: #000000, $alpha: 0.3);
+            // border-bottom: 1px solid rgba($color: #000000, $alpha: 0.3);
+            display: flex;
+            align-items: center;
+
+            .pic {
+
+                .searchAvatar {
+                    width: 100px;
+                    border-radius: 100%;
+                    margin-right: 30px;
+                }
+
+                .noAvatar {
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 100%;
+                    background-color: #e7a2f4;
+                    margin-right: 30px;
+                    display: flex;
+                    justify-content: center;
+                    font-size: 24px;
+                    font-weight: 400;
+
+                    .initialText {
+                        align-self: center;
+                    }
+                }
+            }
+
+            .info {
+                display: flex;
+                flex-direction: column;
+
+                .userName {
+                    font-size: 20px;
+                    font-weight: 500;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+
+    .search__videos {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+
+        .searchVideoBlock {
+            border-top: 1px solid rgba($color: #000000, $alpha: 0.3);
+            padding: 30px 0 0;
+            margin: 30px 0 0;
+            display: flex;
+            // align-items: center;
+
+            // flex-direction: row;
+
+            .videoBlock__thumbnail {
+                width: 250px;
+            }
+        }
+    }
+}

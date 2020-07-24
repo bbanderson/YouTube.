@@ -1,0 +1,38 @@
+extends ./templates/layout
+include ./mixins/videoBlock
+
+block content
+    .user-profile
+        if user.avatarUrl
+            .user-profile__background(style=`background-image:url(${user.avatarUrl});background-size:contain;`)
+        else
+            .user-profile__background(style=`background-image:url(https://source.unsplash.com/random);background-size:contain;`)
+            //- img.bg(src=loggedUser.avatarUrl)
+        .user-profile__header
+            .identity
+                if user.avatarUrl
+                    img.avatar(src=user.avatarUrl)
+                else
+                    img.avatar(src="https://source.unsplash.com/random", width="100", height="100")
+                h1.profile__username=user.name
+            if loggedUser && user.id === loggedUser.id
+                .edit-buttons
+                    button.user-edit
+                        a(href=`/users${routes.editProfile}`)
+                            span Edit Profile
+                    button.user-edit
+                        a(href=`/users${routes.changePassword}`)
+                            span Change Password
+                    button.user-edit
+                        a(href=routes.logout)
+                            span Logout
+        //- if loggedUser && loggedUser.id === user
+    .uploaded-videos
+        each item in user.videos.reverse()
+            +videoBlock({
+                id: item.id,
+                title: item.title,
+                views: item.views,
+                videoFile: item.fileUrl,
+                createdAt: String(item.createdAt).split(" ").slice(0, 4).join(" ")               
+            })

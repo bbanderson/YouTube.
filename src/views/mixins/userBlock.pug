@@ -1,0 +1,11 @@
+mixin userBlock(user={})
+    .userBlock
+        .pic
+            if user.avatarUrl
+                img.searchAvatar(src=user.avatarUrl)
+            else
+                .noAvatar
+                   span.initialText #{user.name[0].toUpperCase()}
+        .info
+            a.userName(href=routes.userDetail(user.id)) #{user.name}
+            span.videoCount 동영상 #{user.videoCount}개

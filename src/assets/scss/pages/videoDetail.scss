@@ -1,0 +1,186 @@
+.video-detail__container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    max-width: 60%;
+    // align-items: center;
+
+
+
+    .video__info {
+        width: 100%;
+        max-width: 850px;
+        margin-top: 25px;
+
+        button {
+            width: 100px;
+            margin-bottom: 25px;
+            color: white;
+            background-color: #065fd4;
+            border: none;
+            padding: 10px;
+        }
+
+        .video__description {
+            display: flex;
+            flex-direction: column;
+
+            font-size: 16px;
+            margin-top: 10px;
+            padding: 20px 0;
+            border-top: 1px solid rgba($color: #000000, $alpha: .3);
+            border-bottom: 1px solid rgba($color: #000000, $alpha: .3);
+
+            // align-items: flex-start;
+            .video__description-creator {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .video__description-creator-col {
+                    display: flex;
+                    align-items: center;
+
+                    button {
+                        margin-bottom: 0;
+                    }
+                }
+
+                .avatar {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 100%;
+                    background-color: #3498db;
+                    margin-right: 10px;
+                }
+
+                .video__description__author {
+                    // margin-top: 15px;
+
+                    .author {
+                        font-weight: 500;
+                    }
+
+                    .video__description__text {
+                        margin-top: 30px;
+                        font-weight: 400;
+                    }
+                }
+
+                .video__description-edit {
+                    position: relative;
+                }
+
+
+            }
+
+            .video__description__text {
+                margin-top: 20px;
+                margin-left: 60px;
+            }
+        }
+
+        .video__author {
+            a {
+                color: #3498db;
+            }
+        }
+
+        .video__title,
+        .video__views {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .video__title {
+            font-size: 22px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .sub_title {
+            display: flex;
+            padding-bottom: 3px;
+
+            .bullet {
+                margin: 0 5px;
+            }
+        }
+
+        .video__views {
+            font-size: 14px;
+        }
+
+        .video__description {}
+    }
+
+    .video__comments {
+        margin-top: 25px;
+
+        .video__comments-number {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .add__comment {
+            margin-top: 25px;
+            width: 100%;
+
+            input {
+                width: 100%;
+            }
+        }
+
+        .comments {
+            display: flex;
+            align-items: center;
+        }
+
+        .comments__avatar-list,
+        .comments__text-list {
+            margin-top: 50px;
+            display: grid;
+            align-items: center;
+            // flex-direction: column;
+
+            li {
+                // background-color: #3498db;
+                // color: white;
+                // border: 1px solid black;
+                height: 100px;
+                padding: 15px;
+                border-radius: 20px;
+                border-bottom-left-radius: 0px;
+
+                &:not(:last-child) {
+                    margin-bottom: 15px;
+                }
+
+                .delete__comment {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}
+
+aside {
+    // display: none;
+    position: absolute;
+    // margin-top: $headerHeight;
+    top: 55px;
+}
+
+// main {
+//     // width: 100%;
+//     // max-width: 1400px;
+//     // margin: 0 auto;
+//     // min-height: 70vh;
+//     background-color: $homeBgColor;
+//     margin-top: $headerHeight;
+//     margin-left: 30px;
+//     height: 90vh;
+//     position: absolute;
+//     // top: 30px;
+//     left: 20%;
+// }

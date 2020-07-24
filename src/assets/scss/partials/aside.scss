@@ -1,0 +1,17 @@
+.sidebar {
+    position: fixed;
+    background-color: $headerColor;
+    height: 100vh;
+    width: $asideGap;
+    padding: 0 12px;
+
+    .menu {
+        margin-bottom: 5px;
+        padding: 15px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgba($color: #000000, $alpha: .2);
+        }
+    }
+}

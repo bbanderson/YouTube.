@@ -1,0 +1,14 @@
+extends ./templates/layout
+
+block content
+  .login__container
+    form.login(action=routes.login, method="post")
+      input(type="email", name="email", placeholder="Email" required)
+      input(type="password", name="password", placeholder="Password" required)
+      input(type="submit", value="Log In" required)
+    .join
+      a(href=routes.join)
+        button
+          |Doesn't Have Account?
+          |Sign up for Free!
+    include ./partials/socialLogin

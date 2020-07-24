@@ -1,0 +1,166 @@
+// .header {
+//     background-color: $white;
+//     margin-bottom: 50px;
+
+//     .header__wrapper {
+//         padding: 5px 0px;
+//         width: 100%;
+//         margin: 0 auto;
+//         max-width: 1200px;
+//         display: grid;
+//         grid-template-columns: repeat(3, 1fr);
+//         align-items: center;
+
+//         .header__column {
+//             i {
+//                 color: white;
+//                 font-size: 30px;
+//             }
+
+//             &:nth-child(2) {
+//                 width: 100%;
+//                 justify-self: center;
+//             }
+
+//             &:last-child {
+//                 justify-self: end;
+//             }
+
+//             ul {
+//                 display: flex;
+//                 color: white;
+//                 font-weight: 600;
+//                 text-transform: uppercase;
+
+//                 li:not(:last-child) {
+//                     margin-right: 15px;
+//                 }
+//             }
+
+//             form {
+//                 width: 100%;
+
+//                 input {
+//                     padding: 7px 10px;
+//                     width: 100%;
+//                     border-radius: 5px;
+//                     font-size: 14px;
+//                     color: $black;
+//                     font-weight: 600;
+//                     max-width: none;
+
+//                     &::placeholder {
+//                         font-weight: 300;
+//                         color: rgba(0, 0, 0, 0.7);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+@keyframes hideAside {
+    0% {
+        transform: translateX(0px);
+    }
+
+    100% {
+        transform: translateX(-5000px);
+
+        main {
+            margin-left: 10px;
+        }
+    }
+}
+
+@keyframes showAside {
+    0% {
+        transform: translateX(-5000px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+.hide-aside {
+    animation: hideAside .5s ease-in-out forwards;
+}
+
+.show-aside {
+    animation: showAside .3s ease-in-out forwards;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: $headerHeight;
+    background-color: $headerColor;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    z-index: 9;
+
+
+    .header__logo,
+    .header__menu {
+        display: flex;
+        align-items: center;
+
+        .profile-image {
+            border-radius: 100%;
+        }
+    }
+
+    .header__search {
+        display: flex;
+        width: 25%;
+        height: 30px;
+
+        form {
+            display: flex;
+            width: 100%;
+
+            input {
+                width: 100%;
+                border: 1px solid rgba($color: #000000, $alpha: .2);
+            }
+
+            button {
+                width: 60px;
+                border: 1px solid rgba($color: #000000, $alpha: .2);
+            }
+        }
+
+    }
+}
+
+i {
+    margin-right: 33px;
+    font-size: 18px;
+}
+
+.fa-youtube {
+    color: red;
+    margin-right: 0;
+}
+
+.loginButton {
+    background-color: transparent;
+    border: 1px solid blue;
+    border-color: blue;
+    border-radius: 5px;
+    width: 90px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: blue;
+}
+
+.fa-user-circle {
+    font-size: 20px;
+    margin-right: 3px;
+}

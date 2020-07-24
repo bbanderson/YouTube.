@@ -1,0 +1,34 @@
+header.header
+  .header__logo
+    i.fas.fa-bars#hamburger
+    a(href=routes.home)
+      i.fab.fa-youtube
+      span.logo YouTube
+    .region
+      span #{region}
+  .header__search
+    form(action=routes.search, method="get")
+      input(type="text", placeholder="검색" , name="term", required)
+      button.fas.fa-search(type="submit")
+  .header__menu
+    a(href=`/videos${routes.upload}`)
+      i.fas.fa-video
+    a(href="https://nomadcoders.co", target="_blank")
+      i.fas.fa-th    
+    if !loggedUser
+      a(href="https://github.com/bbanderson", target="_blank")
+        i.fas.fa-ellipsis-v
+      a.loginButton(href=routes.login)
+        .fas.fa-user-circle
+        |로그인
+    else
+      i.fas.fa-bell
+      a(href=routes.userDetail(loggedUser.id))
+        if loggedUser.avatarUrl
+          img.profile-image(src=loggedUser.avatarUrl, alt="", width="30")
+        else
+          span=initialName
+      //- a(href=routes.logout) Log Out
+        //- li
+        //-   a(href=routes.join) Join
+        //- a(href=routes.login) Log In
