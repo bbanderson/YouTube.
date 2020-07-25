@@ -83,10 +83,25 @@ export const videoDetail = async (req, res) => {
       id
     },
   } = req;
+  let recommendVideos = [];
   try {
     const video = await Video.findById(id)
       .populate("creator")
       .populate("comments");
+    const charSet = '|';
+    const index = charSet.length;
+    const randomQuery = charSet[Math.floor(Math.random() * index)]
+    console.log(randomQuery)
+    // for (let i = 0; i < randomIndex; i++) {
+    //   result += randomChar.charAt(Math.floor(Math.random() * randomIndex));
+    // }
+    recommendVideos = await Video.find({
+      title: {
+        $regex: randomQuery,
+        $options: "i",
+      },
+    });
+    console.log(recommendVideos);
     let commentAvatars = [];
     for (let i = 0; i < video.comments.length; i++) {
       // console.log(video.comments[i].creator)
@@ -112,7 +127,8 @@ export const videoDetail = async (req, res) => {
       siteName: `${video.title} - `,
       video,
       createdAt: date,
-      commentAvatars
+      commentAvatars,
+      recommendVideos
     });
   } catch (error) {
     console.log(error);

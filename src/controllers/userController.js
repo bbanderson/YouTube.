@@ -253,7 +253,7 @@ export const postEditProfile = async (req, res) => {
       avatarUrl: file ? file.location : req.user.avatarUrl,
     });
     req.flash("success", "Profile updated");
-    res.redirect(routes.me);
+    res.redirect(routes.userDetail(req.user.id));
   } catch (error) {
     req.flash("error", "Cannot update profile");
     res.render("editProfile", {
