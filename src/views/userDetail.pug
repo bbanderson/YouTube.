@@ -13,18 +13,19 @@ block content
                 if user.avatarUrl
                     img.avatar(src=user.avatarUrl)
                 else
-                    img.avatar(src="https://source.unsplash.com/random", width="100", height="100")
+                    .avatar
+                        span=String(loggedUser.name[0]).toUpperCase()
                 h1.profile__username=user.name
             if loggedUser && user.id === loggedUser.id
                 .edit-buttons
-                    button.user-edit
-                        a(href=`/users${routes.editProfile}`)
+                    a(href=`/users${routes.editProfile}`)
+                        button.user-edit
                             span Edit Profile
-                    button.user-edit
-                        a(href=`/users${routes.changePassword}`)
+                    a(href=`/users${routes.changePassword}`)
+                        button.user-edit
                             span Change Password
-                    button.user-edit
-                        a(href=routes.logout)
+                    a(href=routes.logout)
+                        button.user-edit.logout
                             span Logout
         //- if loggedUser && loggedUser.id === user
     .uploaded-videos

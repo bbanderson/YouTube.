@@ -18,8 +18,16 @@
 
         .avatar {
             width: 100px;
+            height: 100px;
             border-radius: 100%;
             margin-right: 20px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            font-weight: 500;
+
         }
 
         .profile__username {
@@ -36,12 +44,13 @@
         align-items: center;
 
         button.user-edit {
+            border-radius: 4px;
             background-color: #065fd4;
             height: 40px;
             padding: 10px 20px;
             margin-right: 10px;
 
-            &:nth-child(3) {
+            &.logout {
                 background-color: $dark-red;
             }
 

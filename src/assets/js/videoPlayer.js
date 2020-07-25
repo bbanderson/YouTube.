@@ -13,6 +13,7 @@ const volumeRange = document.getElementById("jsVolume");
 
 let currentTimeNum = 0.0;
 let duration = 0.1;
+let hideControllerTimer = null;
 
 const registerView = () => {
   const videoId = window.location.href.split("/videos/")[1];
@@ -83,15 +84,22 @@ function exitFullScreen() {
 
 // ********** Hide & Seek **********
 
-function hiding() {
+function hideContoller() {
+  // controller.classList.remove("showing");
   controller.style.opacity = 0;
   videoContainer.style.cursor = "none";
+  document.removeEventListener("keydown", handleKeyDown);
 }
 
-function handleHideController() {
-  setTimeout(hiding, 5000);
+function showController() {
+  if (hideControllerTimer) {
+    clearTimeout(hideControllerTimer)
+  }
   controller.style.opacity = 1;
+  // controller.classList.add("showing");
   videoContainer.style.cursor = "inherit";
+  hideControllerTimer = setTimeout(hideContoller, 5000);
+  document.addEventListener("keydown", handleKeyDown);
 }
 
 function goFullScreen() {
@@ -176,21 +184,24 @@ function handleProgressClick(event) {
 function init() {
   // Play & Pause
   playBtn.addEventListener("click", handlePlayClick);
-  document.addEventListener("keydown", handleKeyDown);
   // Volume
   videoPlayer.volume = 0.5;
   volumeBtn.addEventListener("click", handleVolumeBtnClick);
   // Full Screen
   fullScrnBtn.addEventListener("click", goFullScreen);
   // Time
-  videoPlayer.addEventListener("loadedmetadata", setTotalTime);
+  videoPlayer.addEventListener("loadedmetadata", {
+    setTotalTime,
+    handleEnded
+  });
   if (videoPlayer.readyState >= 2) {
     setTotalTime();
   }
-  videoPlayer.addEventListener("ended", handleEnded);
+  // videoPlayer.addEventListener("ended", handleEnded);
   volumeRange.addEventListener("input", handleDrag);
   // Mouse Hover
-  videoContainer.addEventListener("pointermove", handleHideController);
+  videoContainer.addEventListener("mousemove", showController);
+  videoContainer.addEventListener("mouseleave", hideContoller);
   // Progress
   progress.addEventListener("input", handleProgressClick);
 

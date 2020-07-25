@@ -1,13 +1,27 @@
-.whole-container {
-    display: flex;
+// Aside Menu
+
+aside {
+    // display: none;
+    position: absolute;
+    // margin-top: $headerHeight;
+    top: 55px;
 }
 
+.whole-container {
+    display: flex;
+    padding-top: 30px;
+    justify-content: center;
+}
+
+// Left-side (Video Player Part)
 
 .video-detail__container {
     display: flex;
     flex-direction: column;
     margin-left: 10px;
     max-width: 60%;
+    position: relative;
+    right: 130px;
     // align-items: center;
 
 
@@ -116,7 +130,9 @@
             font-size: 14px;
         }
 
-        .video__description {}
+        .video__description {
+            line-height: 1.6;
+        }
     }
 
     .video__comments {
@@ -169,29 +185,68 @@
     }
 }
 
-aside {
-    // display: none;
-    position: absolute;
-    // margin-top: $headerHeight;
-    top: 55px;
-}
+// Right Side (Recommend Videos Part)
 
 .recommend__container {
-    margin-left: 50px;
-    max-width: 15%;
-    display: flex;
-    flex-direction: column;
+    // margin-left: 50px;
+    width: 15%;
+    position: relative;
+    right: 100px;
+    // display: flex;
+    // flex-direction: column;
 
-    .videoBlock {
-        display: flex;
-        width: 100%;
-        height: auto;
+    .recommend__text {
+        font-weight: 600;
+    }
+
+    .recommendBlock {
+        display: grid;
+        // height: auto;
+        margin-top: 15px;
         margin-bottom: 30px;
 
-        a {
+        // grid-template-columns: 300px 300px;
+        &>a {
+            width: 100%;
             display: flex;
-            // overflow: auto;
         }
+
+        .videoBlock__thumbnail {
+            width: 80%;
+            margin-right: 10px;
+        }
+
+        .videoBlock__info {
+            display: flex;
+            flex-direction: column;
+
+            .videoBlock__title {
+                width: 200px;
+                font-weight: 800;
+                font-size: 1rem;
+            }
+
+            .creator {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                width: 200px !important;
+
+                a {
+
+                    position: relative !important;
+                }
+            }
+
+            .views {
+                display: flex;
+                flex-direction: row;
+
+            }
+
+        }
+
+
+
 
     }
 }

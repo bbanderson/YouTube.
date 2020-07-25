@@ -72,26 +72,49 @@ block content
           else
             input(type="text", id="js-comment", placeholder="Please log in or cannot leave a comment", autocomplete="off", disabled)
         .comments
-          ul.comments__avatar-list
+          ul.comments__list
+            each comment in commentData.reverse() 
+              li.comment
+                .avatar
+                  a(href=routes.userDetail(comment.creator_id))
+                    img(src=comment.avatarUrl, width="50", style="border-radius: 100%;")
+                .text
+                  span.creator
+                    a(href=routes.userDetail(comment.creator_id)) #{comment.creator_name}
+                  span.content=comment.text
+                span.jsDeleteComment
+                  form.delete__comment#jsDeleteComment
+                    input(type="hidden", class="commentID", name="commentID", value=comment.id)
+                    if loggedUser
+                      input.deleteBtn(type="submit", value="DELETE")
+
+          //- ul.comments__avatar-list
             each commentAvatar in commentAvatars
               li.commentAvatar
-                img(src=commentAvatar, width="50", style="border-radius: 100%;")
-          ul.comments__text-list
+                if commentAvatar.length > 0
+                  img(src=commentAvatar, width="50", style="border-radius: 100%;")
+                else
+                  .no-avatar
+                    //- span=
+          //- ul.comments__text-list
             each comment in video.comments.reverse() 
               li.commentText
                 //- img(src=comment.creator.avatarUrl)
                 span=comment.text
-                span #{comment.creator._id}
+                span #{comment.creator}
                 span.jsDeleteComment
                   form.delete__comment#jsDeleteComment
                     input(type="hidden", class="commentID", name="commentID", value=comment.id)
                     input.deleteBtn(type="submit", value="DELETE")
     .recommend__container
+      span.recommend__text 다음 동영상
       each item in recommendVideos
         +recommendBlock({
           id: item.id,
           title: item.title,
           views: item.views,
           videoFile: item.fileUrl,
+          creatorID: item.creator.id,
+          creatorName: item.creator.name,
           createdAt: String(item.createdAt).split(" ").slice(0, 4).join(" ")
       })

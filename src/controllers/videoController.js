@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import routes from "../routes";
 import Video from "../models/Video";
 import User from "../models/User";
@@ -7,6 +8,7 @@ import {
 } from "../middlewares";
 
 export const home = async (req, res) => {
+  console.log("Current logged user : ", req.user);
   const videos = await Video.find({}).sort({
     _id: -1,
   });
@@ -35,7 +37,8 @@ export const search = async (req, res) => {
         $regex: searchingBy,
         $options: "i"
       }
-    });
+    }).populate("videos");
+    console.log("Search results on Users : ", users);
   } catch (error) {}
   res.render("search", {
     siteName: `${searchingBy} - `,
@@ -72,7 +75,7 @@ export const postUpload = async (req, res) => {
     description,
     creator: req.user.id,
   });
-  console.log(newVideo);
+  console.log("Uploaded a video : ", newVideo);
   req.user.videos.push(newVideo.id);
   req.user.save();
   res.redirect(routes.videoDetail(newVideo.id));
@@ -86,36 +89,44 @@ export const videoDetail = async (req, res) => {
   let recommendVideos = [];
   try {
     const video = await Video.findById(id)
-      .populate("creator")
+      .populate("creator").populate("videos")
       .populate("comments");
-    const charSet = '|';
-    const index = charSet.length;
-    const randomQuery = charSet[Math.floor(Math.random() * index)]
-    console.log(randomQuery)
+    console.log("This video : ", video)
+    // const charSet = '|';
+    // const index = charSet.length;
+    // const randomQuery = charSet[Math.floor(Math.random() * index)]
+    // console.log(randomQuery)
     // for (let i = 0; i < randomIndex; i++) {
     //   result += randomChar.charAt(Math.floor(Math.random() * randomIndex));
     // }
     recommendVideos = await Video.find({
       title: {
-        $regex: randomQuery,
+        $regex: " ",
         $options: "i",
       },
-    });
-    console.log(recommendVideos);
-    let commentAvatars = [];
-    for (let i = 0; i < video.comments.length; i++) {
+    }).populate("creator").populate("comments");
+    console.log("Recommend video list : ", recommendVideos);
+    let commentData = []
+    for (let i = 0; i < await video.comments.length; i++) {
+      const commentDataObj = {};
       // console.log(video.comments[i].creator)
       const user = await User.find({
         _id: video.comments[i].creator
-      });
+      }).populate("comments").populate("videos");
       // console.log(user[0].avatarUrl)
       if (user[0].avatarUrl) {
-        commentAvatars.push(user[0].avatarUrl);
+        commentDataObj["avatarUrl"] = user[0].avatarUrl;
       } else {
-        commentAvatars.push("");
+        commentDataObj["avatarUrl"] = "";
       }
+      commentDataObj["id"] = video.comments[i].id
+      commentDataObj["text"] = video.comments[i].text
+      commentDataObj["creator_name"] = user[0].name
+      commentDataObj["creator_id"] = user[0].id
+      commentData.push(commentDataObj);
+      // commentDataObj["id"] = video.comments
     }
-    console.log(commentAvatars)
+    console.log("Comment data in this video : ", commentData)
     // console.log(video.comments["_id"]);
     // const commentCreators = [];
     // for (let i = 0; i < video.comments.length; i++) {
@@ -127,11 +138,11 @@ export const videoDetail = async (req, res) => {
       siteName: `${video.title} - `,
       video,
       createdAt: date,
-      commentAvatars,
+      commentData,
       recommendVideos
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error on video detail page : ", error);
     res.redirect(routes.home);
   }
 };
@@ -182,17 +193,18 @@ export const deleteVideo = async (req, res) => {
     },
   } = req;
   try {
-    const video = await Video.findById(id);
+    const video = await Video.findById(id).populate("comments").populate("creator");
     const regex = /(http[s]?:\/\/)?([^\/\s]+\/)(.*)/;
     const filePath = await video.fileUrl.match(regex)[3];
     const delFile = {
       Bucket: "bbantube/video",
       Key: filePath,
     };
+
     await s3
       .deleteObject(delFile, (err, data) => {
         if (err) {
-          console.err(err);
+          console.err("Error on deleting video in AWS S3 : ", err);
         } else {
           console.log("Your video has been removed.");
         }
@@ -201,6 +213,12 @@ export const deleteVideo = async (req, res) => {
     await Video.findOneAndRemove({
       _id: id,
     });
+    const beforeDeleteVideos = req.user.videos;
+    let afterDeleteVideos = [];
+    afterDeleteVideos = beforeDeleteVideos.filter(item => {
+      return item !== id
+    });
+    req.user.videos = afterDeleteVideos;
   } catch (error) {
     res.status(400);
   }
@@ -238,13 +256,13 @@ export const postAddComment = async (req, res) => {
     user,
   } = req;
   try {
-    const video = await Video.findById(id);
+    const video = await Video.findById(id).populate("comments").populate("creator");
     const newComment = await Comment.create({
       text: comment,
       creator: user.id,
     });
-    const wroteUser = await User.findById(user.id);
-    console.log(wroteUser);
+    const wroteUser = await User.findById(user.id).populate("comments").populate("videos");
+    console.log("Comment wrote user(current logged in) : ", wroteUser);
     // console.log(user.id === req.user.id)
     video.comments.push(newComment.id);
     video.save();
@@ -259,19 +277,25 @@ export const postAddComment = async (req, res) => {
 export const postDeleteComment = async (req, res) => {
   const {
     body: {
-      commentId
+      commentId,
+      videoId
     },
     params: {
       id
     }
   } = req;
-  console.log(commentId);
+  console.log("Deleted comment Id : ", commentId);
   try {
-    await Comment.findByIdAndRemove({
-      _id: commentId
-    });
+    await Comment.findByIdAndRemove(commentId);
+    // const video = await Video.findById(id).populate("comments").populate("creator");
+    // console.log("Wanna delete vid : ", video);
+    // video.comments = video.comments.filter(id => {
+    //   return id !== commentId;
+    // })
   } catch (error) {
-    console.log(error)
+    console.log("Error while deleting : ", error)
+  } finally {
+    res.end()
+    // res.redirect(routes.videoDetail(videoId))
   }
-  res.redirect(routes.videoDetail(id))
 }

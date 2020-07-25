@@ -1,10 +1,15 @@
 mixin recommendBlock(video={})
-  .videoBlock
+  .recommendBlock
     a(href=routes.videoDetail(video.id))
-      video.videoBlock__thumbnail(src=video.videoFile, controls=false)
-      h4.videoBlock__title=video.title
+      video.videoBlock__thumbnail(src=video.videoFile, controls=false, preload="metadata")
       .videoBlock__info
-        h6.videoBlock__views 조회수 #{video.views}회
-        .bullet
-          |•
-        p=video.createdAt
+        if video.title.length > 15
+          .videoBlock__title=video.title
+        else
+          .videoBlock__title=`${String(video.title).slice(0,16)}...`
+        .creator(href=routes.userDetail(video.creatorID))=video.creatorName
+        .views
+          span.videoBlock__views 조회수 #{video.views}회
+          .bullet
+            |&nbsp;•&nbsp;
+          p=video.createdAt

@@ -7,17 +7,19 @@ const commentNumber = document.getElementById("jsCommentNumber");
 
 
 const handleDeleleBtn = (event) => {
-    console.log(event.target.parentNode.parentNode.parentNode);
+    // console.log(event.target.parentNode.parentNode.parentNode);
     event.target.parentNode.parentNode.parentNode.style.display = "none";
     commentNumber.innerHTML = parseInt(commentNumber.innerHTML, 10) - 1;
 }
 
 const deleteComment = (commentId) => {
+    const videoId = window.location.href.split("/videos/")[1];
     axios.post(`/api/${commentId}/comment/delete`, {
-        commentId
+        commentId,
+        videoId
     }).then((response) => {
         if (response.status === 200) {
-            console.log("SUCCESS");
+            console.log("Your comment has been deleted.");
             // arrangeList(commentId)
         }
     }).catch((error) => {

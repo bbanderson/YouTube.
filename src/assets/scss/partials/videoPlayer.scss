@@ -33,8 +33,21 @@
             align-items: center;
             width: 100%;
 
-            #jsVolumeBtn {
-                margin-right: 10px;
+            #jsPlayButton {
+                // align-self: flex-start;
+                position: absolute !important;
+                left: 4% !important;
+                top: 25% !important;
+
+                // margin-right: 10px;
+                span {
+
+                    text-align: center;
+                }
+
+                i.fa-play {
+                    font-size: 20px;
+                }
             }
         }
 
@@ -86,13 +99,17 @@
             font-size: 25px;
             cursor: pointer;
         }
+
+
     }
 }
 
 input.progress[type="range"] {
+    cursor: pointer;
     outline: none;
     overflow: hidden;
     width: 100%;
+    padding: 3px 0;
     -webkit-appearance: none;
     background-color: white;
 }
@@ -105,9 +122,36 @@ input.progress[type="range"]::-webkit-slider-runnable-track {
 }
 
 input.progress[type="range"]::-webkit-slider-thumb {
-    width: 10px;
+    width: 1px;
     -webkit-appearance: none;
     height: 10px;
+    cursor: pointer;
+    background: #ff0100;
+    // background: black;
+    box-shadow: -9000px 0 0 9000px #ff0100;
+}
+
+input.videoPlayer__volume {
+    cursor: pointer;
+    outline: none;
+    overflow: hidden;
+    width: 100px;
+    padding: 3px 0;
+    -webkit-appearance: none;
+    background-color: white;
+}
+
+input.videoPlayer__volume::-webkit-slider-runnable-track {
+    height: 1px;
+    -webkit-appearance: none;
+    color: #ff0100;
+    margin-top: -1px;
+}
+
+input.videoPlayer__volume::-webkit-slider-thumb {
+    width: 1px;
+    -webkit-appearance: none;
+    height: 1px;
     cursor: pointer;
     background: #ff0100;
     // background: black;

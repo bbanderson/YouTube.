@@ -1,12 +1,54 @@
-.video__comments-list {
-    padding-bottom: 30px;
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    grid-template-rows: 100px;
-    height: max-content;
+// .video__comments-list {
+//     padding-bottom: 30px;
+//     display: grid;
+//     grid-template-columns: 100px 1fr;
+//     grid-template-rows: 100px;
+//     height: max-content;
 
-    .commentAvatar,
-    .commentText {
-        height: 100px;
+//     .commentAvatar,
+//     .commentText {
+//         height: 100px;
+//     }
+// }
+
+.comments {
+    width: 100%;
+    margin-top: 50px;
+
+    ul.comments__list {
+        display: grid;
+        grid-template-columns: 1fr;
+
+        li.comment {
+            display: flex;
+            margin-bottom: 24px;
+
+            .avatar {
+                margin-right: 12px;
+            }
+
+            .text {
+                display: flex;
+                flex-direction: column;
+                padding-top: 2px;
+
+                .creator {
+                    font-weight: 600;
+                    margin-bottom: 8px;
+                }
+
+                .content {
+                    font-size: 15px;
+                }
+            }
+
+            span.jsDeleteComment {
+                display: inline-block;
+                position: absolute;
+                right: 0;
+                padding-top: 5px;
+
+            }
+        }
     }
 }

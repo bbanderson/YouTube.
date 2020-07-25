@@ -27,7 +27,8 @@ header.header
         if loggedUser.avatarUrl
           img.profile-image(src=loggedUser.avatarUrl, alt="", width="30")
         else
-          span=initialName
+          .profile-image
+            span=String(initialName).toUpperCase()
       //- a(href=routes.logout) Log Out
         //- li
         //-   a(href=routes.join) Join

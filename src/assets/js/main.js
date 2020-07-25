@@ -4,3 +4,4 @@ import "./videoRecorder";
 import "./addComment";
 import "./deleteComment";
 import "./controlCss";
+import "./stringFormat";

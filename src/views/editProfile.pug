@@ -1,11 +1,22 @@
 extends ./templates/layout
 
 block content
-    .form-container
-        form(action=`/users${routes.editProfile}`, method="post", enctype="multipart/form-data")
-            .fileUpload
+    .container
+        .preview
+            if loggedUser.avatarUrl
+                img(src=loggedUser.avatarUrl, width="300")
+            else
+                .no-avatar
+                    span You don't have avatar now
+                    br
+                    span How about upload one?
+        .editProfile-form-container
+            form(action=`/users${routes.editProfile}`, method="post", enctype="multipart/form-data")
                 label(for="avatar") Avatar
-                input(type="file", id="avatar", name="avatar", accept="image/*")
-            input(type="text", placeholder="Name", name="name", value=loggedUser.name)
-            input(type="email", placeholder="Email", name="email", value=loggedUser.email)
-            input(type="submit", value="Update")
+                .fileUpload
+                    input(type="file", id="avatar", name="avatar", accept="image/*")
+                label(for="name") Name
+                input(type="text", id="name" placeholder="Name", name="name", value=loggedUser.name)
+                label(for="email") Email
+                input(type="email", id="email" placeholder="Email", name="email", value=loggedUser.email)
+                input(type="submit", value="Update")

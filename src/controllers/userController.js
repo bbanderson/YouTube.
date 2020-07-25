@@ -16,7 +16,7 @@ export const postJoin = async (req, res, next) => {
     },
   } = req;
   if (password !== password2) {
-    req.flash("error", "Passwrods don't match.");
+    req.flash("error", "Passwords don't match.");
     res.status(400);
     res.render("join", {
       siteName: "Join",
@@ -42,10 +42,10 @@ export const getLogin = (req, res) =>
     siteName: "Login - ",
   });
 export const postLogin = passport.authenticate("local", {
+  successFlash: "Welcome",
+  failureFlash: "Cannot log in, check your account",
   failureRedirect: routes.login,
   successRedirect: routes.home,
-  successFlash: "Welcome",
-  failureFlash: "Check your account"
 });
 // SOCIAL LOGIN PART
 // Github
@@ -216,8 +216,13 @@ export const userDetail = async (req, res) => {
     },
   } = req;
   try {
-    const user = await User.findById(id).populate("videos");
-    console.log(user);
+    const user = await User.findById(id).populate("videos").populate("comments");
+    console.log("User info you are looking at this page : ", user);
+    // console.log("REQ.USER : ", req.user)
+    for (let i = 0; i < user.videos.length; i++) {
+      console.log("This USER's video id : ", user.videos[i]["_id"])
+    }
+    // console.log("This USER's video id : ", user.videos)
     res.render("userDetail", {
       siteName: `${user.name} - `,
       user,
@@ -227,6 +232,7 @@ export const userDetail = async (req, res) => {
     res.redirect(routes.home);
   }
 };
+
 export const getMe = (req, res) => {
   res.render("userDetail", {
     siteName: "YouTube Studio - ",
