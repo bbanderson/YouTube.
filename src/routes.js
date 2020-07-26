@@ -34,6 +34,7 @@ const UPLOAD = "/upload"
 // API
 const API = "/api";
 const REGISTER_VIEW = "/:id/view";
+const LOAD_COMMENTS = "/:id/all-comments";
 const ADD_COMMENTS = "/:id/comment";
 const DELETE_COMMENTS = "/:id/comment/delete";
 
@@ -84,6 +85,7 @@ const routes = {
     }
   },
   api: API,
+  loadComments: LOAD_COMMENTS,
   registerView: REGISTER_VIEW,
   addComments: ADD_COMMENTS,
   deleteComments: DELETE_COMMENTS

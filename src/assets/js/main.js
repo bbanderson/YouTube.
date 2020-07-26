@@ -5,3 +5,4 @@ import "./addComment";
 import "./deleteComment";
 import "./controlCss";
 import "./stringFormat";
+import "./lazy";

@@ -77,7 +77,11 @@ block content
               li.comment
                 .avatar
                   a(href=routes.userDetail(comment.creator_id))
-                    img(src=comment.avatarUrl, width="50", style="border-radius: 100%;")
+                    if comment.avatarUrl
+                      img(src=comment.avatarUrl, width="50", style="border-radius: 100%;")
+                    else
+                      img(src="https://source.unsplash.com/50x50/?white", width="50", style="border-radius: 100%;")
+
                 .text
                   span.creator
                     a(href=routes.userDetail(comment.creator_id)) #{comment.creator_name}
@@ -85,7 +89,8 @@ block content
                 span.jsDeleteComment
                   form.delete__comment#jsDeleteComment
                     input(type="hidden", class="commentID", name="commentID", value=comment.id)
-                    if loggedUser
+                    //- if loggedUser
+                    if loggedUser && comment.creator_id === loggedUser.id
                       input.deleteBtn(type="submit", value="DELETE")
 
           //- ul.comments__avatar-list

@@ -14,7 +14,7 @@ block content
                     img.avatar(src=user.avatarUrl)
                 else
                     .avatar
-                        span=String(loggedUser.name[0]).toUpperCase()
+                        span=String(user.name[0]).toUpperCase()
                 h1.profile__username=user.name
             if loggedUser && user.id === loggedUser.id
                 .edit-buttons

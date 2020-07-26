@@ -1,10 +1,9 @@
 import axios from "axios";
 
 const delCommentForm = document.querySelector("#jsDeleteComment");
-const deleteBtn = document.querySelectorAll(".deleteBtn");
 const commentList = document.querySelector(".video__comments-list");
 const commentNumber = document.getElementById("jsCommentNumber");
-
+const deleteBtn = document.querySelectorAll(".deleteBtn");
 
 const handleDeleleBtn = (event) => {
     // console.log(event.target.parentNode.parentNode.parentNode);
@@ -12,7 +11,7 @@ const handleDeleleBtn = (event) => {
     commentNumber.innerHTML = parseInt(commentNumber.innerHTML, 10) - 1;
 }
 
-const deleteComment = (commentId) => {
+export const deleteComment = async (commentId) => {
     const videoId = window.location.href.split("/videos/")[1];
     axios.post(`/api/${commentId}/comment/delete`, {
         commentId,
@@ -25,23 +24,24 @@ const deleteComment = (commentId) => {
     }).catch((error) => {
         console.log(error.response)
     })
-
 }
 
-const handleSubmit = (event) => {
-    event.preventDefault();
-    const commentId = event.target.querySelector(".commentID")["value"];
-    deleteComment(commentId)
+export const handleCommentId = (event) => {
+    // event.preventDefault();
+    // const commentId = event.target.querySelector(".commentID")["value"];
+    console.log(event.target);
+    // deleteComment(commentId)
 }
 
-const init = () => {
-    delCommentForm.addEventListener("submit", handleSubmit);
+export const init = () => {
+    // delCommentForm.addEventListener("submit", (event) => event.preventDefault());
     // console.log(deleteBtn)
     deleteBtn.forEach(btn => {
-        btn.addEventListener("click", handleDeleleBtn);
+        btn.addEventListener("click", handleCommentId)
     })
+
 };
 
-if (delCommentForm) {
+if (deleteBtn) {
     init();
 };

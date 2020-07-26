@@ -10,7 +10,7 @@ const commentNumber = document.getElementById("jsCommentNumber");
 let img = new Image();
 let imgUrl = "";
 
-const addComment = (comment) => {
+const addComment = (comment, commentCreatorData) => {
 
     const newLI = document.createElement("li");
     newLI.className = "comment";
@@ -34,10 +34,10 @@ const addComment = (comment) => {
     box-sizing: border-box;
     margin-right: 12px;
     padding: 0;
-    border: 0;
+    border: 1px solid rgba($color: #000000, $alpha: 0.1);
     font-size: 100%;
     font: inherit;
-    vertical-align: baseline;"><a href="/users/5f191e4168f5be219c8e1d11" style="-webkit-box-direction: normal;
+    vertical-align: baseline;"><a href="/users/${commentCreatorData._id}" style="-webkit-box-direction: normal;
     list-style: none;
     box-sizing: border-box;
     margin: 0;
@@ -49,19 +49,7 @@ const addComment = (comment) => {
     all: unset;
     cursor: pointer;
     text-decoration: none;
-    color: inherit;"><img src="${imgUrl?imgUrl:''}" width="50" style="-webkit-box-direction: normal;
-    list-style: none;
-    cursor: pointer;
-    color: inherit;
-    width: 50px;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-    border-radius: 100%;"></a></div><div class="text" style="    color: #444444;
+    color: inherit;">${imgUrl?`<img src="${imgUrl}" width="50" style="border-radius: 100%;"/>`:`<div class="no-avatar" style="display:flex; justify-content: center; align-items: center; width: 50px; height: 50px; border-radius: 100%; background-color: white; font-weight: 500; -webkit-box-pack: center; -webkit-box-align: center;"><span>${String(commentCreatorData.name[0]).toUpperCase()}</span></div>`}</a></div><div class="text" style="    color: #444444;
     list-style: none;
     box-sizing: border-box;
     margin: 0;
@@ -85,7 +73,7 @@ const addComment = (comment) => {
     font: inherit;
     font-weight: 600;
     margin-bottom: 8px;
-    vertical-align: baseline;"><a href="/users/5f191e4168f5be219c8e1d11" style="list-style: none;
+    vertical-align: baseline;"><a href="/users/${commentCreatorData._id}" style="list-style: none;
     -webkit-box-direction: normal;
     box-sizing: border-box;
     margin: 0;
@@ -97,7 +85,7 @@ const addComment = (comment) => {
     all: unset;
     cursor: pointer;
     text-decoration: none;
-    color: inherit;">anderson</a></span><span class="content" style="color: #444444;
+    color: inherit;">${commentCreatorData.name}</a></span><span class="content" style="color: #444444;
     list-style: none;
     -webkit-box-direction: normal;
     box-sizing: border-box;
@@ -110,6 +98,21 @@ const addComment = (comment) => {
     vertical-align: baseline;">${comment}</span></div>`;
     newList.prepend(newLI);
 
+    // Image Style Backup
+    // <img src="${imgUrl?imgUrl:''}" width="50" style="-webkit-box-direction: normal;
+    // list-style: none;
+    // cursor: pointer;
+    // color: inherit;
+    // width: 50px;
+    // box-sizing: border-box;
+    // margin: 0;
+    // padding: 0;
+    // border: 0;
+    // font-size: 100%;
+    // font: inherit;
+    // vertical-align: baseline;
+    // border-radius: 100%;"></img>
+    //
     setTimeout(() => newLI.style.backgroundColor = "inherit", 2000);
     // // List
     // const liForAvatar = document.createElement("li");
@@ -155,10 +158,12 @@ const sendComment = async (comment) => {
             comment,
         })
         .then((response) => {
-            console.log(response.data.avatarUrl);
             makeImg(response.data.avatarUrl);
+            const commentCreatorData = response.data.wroteUser;
+            // console.log(commentData)
+            addComment(comment, commentCreatorData);
             if (response.status === 200) {
-                addComment(comment);
+                console.log("Success : Uploaded a new comment");
             }
         })
         .catch((error) => {

@@ -106,40 +106,14 @@ export const videoDetail = async (req, res) => {
       },
     }).populate("creator").populate("comments");
     console.log("Recommend video list : ", recommendVideos);
-    let commentData = []
-    for (let i = 0; i < await video.comments.length; i++) {
-      const commentDataObj = {};
-      // console.log(video.comments[i].creator)
-      const user = await User.find({
-        _id: video.comments[i].creator
-      }).populate("comments").populate("videos");
-      // console.log(user[0].avatarUrl)
-      if (user[0].avatarUrl) {
-        commentDataObj["avatarUrl"] = user[0].avatarUrl;
-      } else {
-        commentDataObj["avatarUrl"] = "";
-      }
-      commentDataObj["id"] = video.comments[i].id
-      commentDataObj["text"] = video.comments[i].text
-      commentDataObj["creator_name"] = user[0].name
-      commentDataObj["creator_id"] = user[0].id
-      commentData.push(commentDataObj);
-      // commentDataObj["id"] = video.comments
-    }
-    console.log("Comment data in this video : ", commentData)
-    // console.log(video.comments["_id"]);
-    // const commentCreators = [];
-    // for (let i = 0; i < video.comments.length; i++) {
-    //   await User.findById(video.comments[i]["_id"])
-    // }
-    // const user = await User.findById(video.comments.i)
+
     const date = await String(video.createdAt).split(" ").slice(0, 4).join(" ");
     res.render("videoDetail", {
       siteName: `${video.title} - `,
       video,
       createdAt: date,
-      commentData,
-      recommendVideos
+      recommendVideos,
+      commentData: []
     });
   } catch (error) {
     console.log("Error on video detail page : ", error);
@@ -266,7 +240,11 @@ export const postAddComment = async (req, res) => {
     // console.log(user.id === req.user.id)
     video.comments.push(newComment.id);
     video.save();
-    res.json(wroteUser);
+    res.json({
+      wroteUser,
+      avatarUrl: req.user.avatarUrl,
+      loggedUser: user
+    });
   } catch (error) {
     res.status(400);
   } finally {
@@ -298,4 +276,55 @@ export const postDeleteComment = async (req, res) => {
     res.end()
     // res.redirect(routes.videoDetail(videoId))
   }
+}
+
+export const postLoadComments = async (req, res) => {
+  const {
+    body: {
+      videoId
+    },
+    user
+  } = req;
+  let commentData = [];
+  try {
+    const video = await Video.findById(videoId)
+      .populate("creator").populate("videos")
+      .populate("comments");
+    for (let i = 0; i < await video.comments.length; i++) {
+      const commentDataObj = {};
+      // console.log(video.comments[i].creator)
+      const user = await User.find({
+        _id: video.comments[i].creator
+      }).populate("comments").populate("videos");
+      // console.log(user[0].avatarUrl)
+      if (user[0].avatarUrl) {
+        commentDataObj["avatarUrl"] = user[0].avatarUrl;
+      } else {
+        commentDataObj["avatarUrl"] = "";
+      }
+      commentDataObj["id"] = video.comments[i].id
+      commentDataObj["text"] = video.comments[i].text
+      commentDataObj["creator_name"] = user[0].name
+      commentDataObj["creator_id"] = user[0].id
+      commentData.push(commentDataObj);
+      // commentDataObj["id"] = video.comments
+    }
+    res.json({
+      commentData,
+      user
+    });
+    // console.log("Comment data in this video : ", commentData)
+  } catch (error) {
+    console.error(error);
+    res.status(400);
+  } finally {
+    res.end();
+  }
+  // console.log(video.comments["_id"]);
+  // const commentCreators = [];
+  // for (let i = 0; i < video.comments.length; i++) {
+  //   await User.findById(video.comments[i]["_id"])
+  // }
+  // const user = await User.findById(video.comments.i)
+
 }
