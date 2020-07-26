@@ -197,7 +197,7 @@ function init() {
   if (videoPlayer.readyState >= 2) {
     setTotalTime();
   }
-  // videoPlayer.addEventListener("ended", handleEnded);
+  videoPlayer.addEventListener("ended", handleEnded);
   volumeRange.addEventListener("input", handleDrag);
   // Mouse Hover
   videoContainer.addEventListener("mousemove", showController);

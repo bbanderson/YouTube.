@@ -1,13 +1,15 @@
 extends ./templates/layout
 
 block content
-  .form-container
+  .form-container.upload
     .record-container#jsRecordContainer
       video#jsVideoPreview
-      button#jsRecordBtn Start Recording
-    form(action=`/videos${routes.upload}`, method="post", enctype="multipart/form-data")
-      label(for="file") Video File
-      input(type="file", id="file", name="videoFile" required, accept="video/*")
+    form.uploadForm(action=`/videos${routes.upload}`, method="post", enctype="multipart/form-data")
+      .record
+        label(for="jsRecordBtn") 1. You can skip recording
+        button#jsRecordBtn(type="button") Start Recording
+        label(for="file") 2. Upload your video file
+        input.videoFile(type="file", id="file", name="videoFile" required, accept="video/*")
       input(type="text", placeholder="Title", name="title", autocomplete="off" required)
       textarea(name="description", placeholder="Description", autocomplete="off" required)
       input(type="submit", value="Upload Video")

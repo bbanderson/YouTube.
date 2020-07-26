@@ -43,6 +43,7 @@ block content
                   img.avatar(src=video.creator.avatarUrl)
                 else
                   .avatar
+                    span=String(video.creator.name[0]).toUpperCase()
 
               .video__description__author
                 if video.creator.name

@@ -17,7 +17,7 @@
         margin-bottom: 50px;
         padding: 50px 0;
 
-        input:not([type="file"]),
+        input,
         .fileUpload {
             display: block;
             width: 100%;
@@ -44,6 +44,7 @@
 
 
         input[type="submit"] {
+            cursor: pointer;
             background-color: #065fd4;
             color: white;
         }
@@ -65,8 +66,9 @@
 @mixin buttons {
 
 
-    input:not([type="file"]),
+    input,
     .fileUpload {
+        cursor: pointer;
         display: block;
         width: 100%;
         padding-top: 10px;

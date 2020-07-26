@@ -1,15 +1,53 @@
-.form-container {
-
+.form-container.upload {
+    display: flex;
+    align-items: center;
+    margin-top: 15%;
 
     .record-container {
-        display: flex;
+        // display: flex;
         width: 100%;
-        max-width: 320px;
+        max-width: 720px;
+        height: auto;
         margin-bottom: 50px;
 
         video {
             background-color: $black;
             margin-bottom: 20px;
+            height: 480px;
+        }
+    }
+
+    .uploadForm {
+        label {
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .videoFile {
+            cursor: pointer;
+        }
+
+        button#jsRecordBtn,
+        .videoFile {
+            width: 100%;
+            // max-width: 320px;
+            background-color: $red;
+            color: white;
+        }
+
+        #jsRecordBtn,
+        .videoFile {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .record {
+            padding: 20px 10px;
+            border-radius: 10px;
+            border: 1px solid black;
+            margin-bottom: 25px;
         }
     }
 }

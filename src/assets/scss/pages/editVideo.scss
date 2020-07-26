@@ -1,6 +1,21 @@
-.deleteVideo {
-    width: 320px;
-    background-color: $red;
-    color: white;
-    border: none;
+.delete {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+
+    a {
+        width: initial;
+        max-width: initial;
+
+        .deleteVideo {
+            width: 320px;
+            // height: 50px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 4px;
+            background-color: $red;
+            color: white;
+            border: none;
+        }
+    }
 }

@@ -72,6 +72,9 @@ aside {
                     border: 1px solid rgba($color: #000000, $alpha: 0.1);
                     // background-color: #3498db;
                     margin-right: 10px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
 
                 .video__description__author {
