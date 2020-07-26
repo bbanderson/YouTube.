@@ -24,7 +24,7 @@ const paintComments = (comments, loggedUser) => {
 
         li.innerHTML = `<div class="avatar"><a href="/users/${creatorId}">${avatarUrl?`<img src="${avatarUrl}" width="50" style="border-radius: 100%;"/>`:`<div class="no-avatar" style="display:flex; justify-content: center; align-items: center; width: 50px; height: 50px; border-radius: 100%; background-color: white; font-weight: 500; -webkit-box-pack: center; -webkit-box-align: center;"><span>${String(creatorName[0]).toUpperCase()}</span></div>`}</a></div>
         <div class="text"><span class="creator"><a href="/users/${creatorId}">${creatorName}</a></span><span class="content">${text}</span></div><span class="jsDeleteComment">
-        ${loggedUser._id === creatorId ? `<button class="deleteBtn">Delete</button>` : ""}</span>`;
+        ${loggedUser && loggedUser._id === creatorId ? `<button class="deleteBtn">Delete</button>` : ""}</span>`;
 
         commentsList.appendChild(li);
 
