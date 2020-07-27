@@ -102,9 +102,12 @@ export const videoDetail = async (req, res) => {
     // }
     recommendVideos = await Video.find({
         title: {
-          $regex: " ",
-          $options: "i",
-        },
+          // $regex: " ",
+          // $options: "i",
+          $not: {
+            $regex: `${video.title}`
+          },
+        }
       })
       .populate("creator")
       .populate("comments");
