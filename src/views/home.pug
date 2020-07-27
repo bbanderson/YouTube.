@@ -30,5 +30,7 @@ block content
         title: item.title,
         views: item.views,
         videoFile: item.fileUrl,
+        creatorID: item.creator.id,
+        creatorName: item.creator.name,
         createdAt: String(item.createdAt).split(" ").slice(0, 4).join(" ")
       })

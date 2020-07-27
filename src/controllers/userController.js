@@ -4,7 +4,7 @@ import User from "../models/User";
 
 export const getJoin = (req, res) =>
   res.render("join", {
-    siteName: "Join",
+    siteName: "Join - ",
   });
 export const postJoin = async (req, res, next) => {
   const {
@@ -19,7 +19,7 @@ export const postJoin = async (req, res, next) => {
     req.flash("error", "Passwords don't match.");
     res.status(400);
     res.render("join", {
-      siteName: "Join",
+      siteName: "Join - ",
     });
   } else {
     // To Do: Register User

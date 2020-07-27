@@ -31,12 +31,12 @@ export const search = async (req, res) => {
         $regex: searchingBy,
         $options: "i",
       },
-    });
+    }).populate("creator");
     users = await User.find({
       name: {
         $regex: searchingBy,
-        $options: "i"
-      }
+        $options: "i",
+      },
     }).populate("videos");
     console.log("Search results on Users : ", users);
   } catch (error) {}
@@ -44,7 +44,7 @@ export const search = async (req, res) => {
     siteName: `${searchingBy} - `,
     searchingBy,
     videos,
-    users
+    users,
   });
 };
 // export const videos = (req, res) => res.render("home", {siteName: "Home"})
@@ -54,9 +54,9 @@ export const getUpload = (req, res) => {
       siteName: "YouTube Studio - ",
     });
   } else {
-    res.render("login")
+    res.render("login");
   }
-}
+};
 export const postUpload = async (req, res) => {
   const {
     body: {
@@ -89,9 +89,10 @@ export const videoDetail = async (req, res) => {
   let recommendVideos = [];
   try {
     const video = await Video.findById(id)
-      .populate("creator").populate("videos")
+      .populate("creator")
+      .populate("videos")
       .populate("comments");
-    console.log("This video : ", video)
+    console.log("This video : ", video);
     // const charSet = '|';
     // const index = charSet.length;
     // const randomQuery = charSet[Math.floor(Math.random() * index)]
@@ -100,11 +101,13 @@ export const videoDetail = async (req, res) => {
     //   result += randomChar.charAt(Math.floor(Math.random() * randomIndex));
     // }
     recommendVideos = await Video.find({
-      title: {
-        $regex: " ",
-        $options: "i",
-      },
-    }).populate("creator").populate("comments");
+        title: {
+          $regex: " ",
+          $options: "i",
+        },
+      })
+      .populate("creator")
+      .populate("comments");
     console.log("Recommend video list : ", recommendVideos);
 
     const date = await String(video.createdAt).split(" ").slice(0, 4).join(" ");
@@ -113,7 +116,7 @@ export const videoDetail = async (req, res) => {
       video,
       createdAt: date,
       recommendVideos,
-      commentData: []
+      commentData: [],
     });
   } catch (error) {
     console.log("Error on video detail page : ", error);
@@ -130,7 +133,7 @@ export const getEditVideo = async (req, res) => {
   try {
     const video = await Video.findById(id);
     res.render("editVideo", {
-      siteName: `Edit ${video.title}`,
+      siteName: `Edit ${video.title} - `,
       video,
     });
   } catch (error) {
@@ -167,7 +170,9 @@ export const deleteVideo = async (req, res) => {
     },
   } = req;
   try {
-    const video = await Video.findById(id).populate("comments").populate("creator");
+    const video = await Video.findById(id)
+      .populate("comments")
+      .populate("creator");
     const regex = /(http[s]?:\/\/)?([^\/\s]+\/)(.*)/;
     const filePath = await video.fileUrl.match(regex)[3];
     const delFile = {
@@ -189,8 +194,8 @@ export const deleteVideo = async (req, res) => {
     });
     const beforeDeleteVideos = req.user.videos;
     let afterDeleteVideos = [];
-    afterDeleteVideos = beforeDeleteVideos.filter(item => {
-      return item !== id
+    afterDeleteVideos = beforeDeleteVideos.filter((item) => {
+      return item !== id;
     });
     req.user.videos = afterDeleteVideos;
   } catch (error) {
@@ -230,12 +235,16 @@ export const postAddComment = async (req, res) => {
     user,
   } = req;
   try {
-    const video = await Video.findById(id).populate("comments").populate("creator");
+    const video = await Video.findById(id)
+      .populate("comments")
+      .populate("creator");
     const newComment = await Comment.create({
       text: comment,
       creator: user.id,
     });
-    const wroteUser = await User.findById(user.id).populate("comments").populate("videos");
+    const wroteUser = await User.findById(user.id)
+      .populate("comments")
+      .populate("videos");
     console.log("Comment wrote user(current logged in) : ", wroteUser);
     // console.log(user.id === req.user.id)
     video.comments.push(newComment.id);
@@ -244,7 +253,7 @@ export const postAddComment = async (req, res) => {
       wroteUser,
       avatarUrl: req.user.avatarUrl,
       loggedUser: user,
-      newCommentId: newComment.id
+      newCommentId: newComment.id,
     });
   } catch (error) {
     res.status(400);
@@ -261,14 +270,14 @@ export const postDeleteComment = async (req, res) => {
     },
     params: {
       id
-    }
+    },
   } = req;
   try {
     await Comment.findByIdAndRemove(deleteCommentId, (error, response) => {
       if (error) {
-        console.error(error)
+        console.error(error);
       } else {
-        console.log(response)
+        console.log(response);
         console.log("Deleted comment Id : ", deleteCommentId);
       }
     });
@@ -278,47 +287,50 @@ export const postDeleteComment = async (req, res) => {
     //   return id !== commentId;
     // })
   } catch (error) {
-    console.log("Error while deleting : ", error)
+    console.log("Error while deleting : ", error);
   } finally {
-    res.end()
+    res.end();
     // res.redirect(routes.videoDetail(videoId))
   }
-}
+};
 
 export const postLoadComments = async (req, res) => {
   const {
     body: {
       videoId
     },
-    user
+    user,
   } = req;
   let commentData = [];
   try {
     const video = await Video.findById(videoId)
-      .populate("creator").populate("videos")
+      .populate("creator")
+      .populate("videos")
       .populate("comments");
-    for (let i = 0; i < await video.comments.length; i++) {
+    for (let i = 0; i < (await video.comments.length); i++) {
       const commentDataObj = {};
       // console.log(video.comments[i].creator)
       const user = await User.find({
-        _id: video.comments[i].creator
-      }).populate("comments").populate("videos");
+          _id: video.comments[i].creator,
+        })
+        .populate("comments")
+        .populate("videos");
       // console.log(user[0].avatarUrl)
       if (user[0].avatarUrl) {
         commentDataObj["avatarUrl"] = user[0].avatarUrl;
       } else {
         commentDataObj["avatarUrl"] = "";
       }
-      commentDataObj["id"] = video.comments[i].id
-      commentDataObj["text"] = video.comments[i].text
-      commentDataObj["creator_name"] = user[0].name
-      commentDataObj["creator_id"] = user[0].id
+      commentDataObj["id"] = video.comments[i].id;
+      commentDataObj["text"] = video.comments[i].text;
+      commentDataObj["creator_name"] = user[0].name;
+      commentDataObj["creator_id"] = user[0].id;
       commentData.push(commentDataObj);
       // commentDataObj["id"] = video.comments
     }
     res.json({
       commentData,
-      user
+      user,
     });
     // console.log("Comment data in this video : ", commentData)
   } catch (error) {
@@ -333,5 +345,4 @@ export const postLoadComments = async (req, res) => {
   //   await User.findById(video.comments[i]["_id"])
   // }
   // const user = await User.findById(video.comments.i)
-
-}
+};

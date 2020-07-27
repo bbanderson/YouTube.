@@ -1,10 +1,7 @@
 import axios from "axios";
 const comments = document.querySelector(".comments");
-const commentsList = comments.querySelector("ul");
-const delCommentForm = document.querySelector("#jsDeleteComment");
+let commentsList = null;
 import {
-    deleteComment,
-    handleCommentId,
     initDelete
 } from "./deleteComment"
 
@@ -60,6 +57,7 @@ const fetchData = () => {
     loadingImg.src = "/static/loading.gif"
     loadingImg.width = "300"
     loadingImg.style = "justify-self: center;"
+    commentsList = comments.querySelector("ul");
     // loadingText.innerHTML = "<span>Loading...</span>"
     commentsList.appendChild(loadingImg);
     window.onload = async () => {

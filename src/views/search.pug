@@ -9,7 +9,7 @@ block content
         h3 There is no result for #{searchingBy}
 
       if users.length > 0
-        h3 Searching for #{searchingBy} in Users : #{users.length} users
+        h3 Searching for "#{searchingBy}" in Users : #{users.length > 1 ? `${users.length} users` : `${users.length} user`}
 
     .search__users
       each item in users
@@ -22,7 +22,7 @@ block content
 
     .search__header
       if videos.length > 0
-        h3 Searching for #{searchingBy} in Videos : #{videos.length} videos
+        h3 Searching for "#{searchingBy}" in Videos : #{videos.length > 1 ? `${videos.length} videos` : `${videos.length} video`}
 
     .search__videos
       each item in videos
@@ -32,6 +32,8 @@ block content
           views: item.views,
           videoFile: item.fileUrl,
           comments: item.comments,
+          creatorID: item.creator.id,
+          creatorName: item.creator.name,
           createdAt: String(item.createdAt).split(" ").slice(0, 4).join(" ")
         })
       

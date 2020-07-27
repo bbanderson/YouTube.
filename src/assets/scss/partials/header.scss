@@ -58,6 +58,7 @@
 //         }
 //     }
 // }
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
 
 @keyframes hideAside {
     0% {
@@ -150,7 +151,15 @@ i {
 
 .fa-youtube {
     color: red;
-    margin-right: 0;
+    margin-right: 3px;
+    font-size: 20px;
+}
+
+span.logo {
+    // font-weight: 800;
+    letter-spacing: -1px;
+    font-size: 18px;
+    font-family: 'Oswald', sans-serif;
 }
 
 .loginButton {

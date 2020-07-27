@@ -4,6 +4,7 @@ mixin videoBlock(video={})
       video.videoBlock__thumbnail(src=video.videoFile, controls=false)
       h4.videoBlock__title=video.title.length > 30? `${String(video.title).slice(0,30)}...` :video.title
       .videoBlock__info
+        .creator(href=routes.userDetail(video.creatorID))=video.creatorName
         h6.videoBlock__views 조회수 #{video.views}회
         .bullet
           |•

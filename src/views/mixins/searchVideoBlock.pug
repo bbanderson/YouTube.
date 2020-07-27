@@ -2,8 +2,19 @@ mixin videoBlock(video={})
   .searchVideoBlock
     a(href=routes.videoDetail(video.id))
       video.videoBlock__thumbnail(src=video.videoFile, controls=false)
-      h4.videoBlock__title=video.title
       .videoBlock__info
+        if video.title.length > 30
+          .videoBlock__title=video.title
+        else
+          .videoBlock__title=`${String(video.title).slice(0,30)}...`
+        .creator(href=routes.userDetail(video.creatorID))=video.creatorName
+        .views
+          span.videoBlock__views 조회수 #{video.views}회
+          .bullet
+            |&nbsp;•&nbsp;
+          p=video.createdAt
+      //- h4.videoBlock__title=video.title
+      //- .videoBlock__info
         h6.videoBlock__views 조회수 #{video.views}회
         .bullet
           |•

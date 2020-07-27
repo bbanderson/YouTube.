@@ -3,8 +3,8 @@
     flex-direction: column;
     padding: 50px 50px 0;
     height: 90vh;
-
-
+    width: 70%;
+    margin-left: 5%;
 
     .search__header {
         font-size: 24px;
@@ -58,23 +58,74 @@
         }
     }
 
-    .search__videos {
-        width: 100%;
+    .searchVideoBlock {
         display: grid;
-        grid-template-columns: 1fr;
+        // height: auto;
+        margin-top: 15px;
+        margin-bottom: 30px;
 
-        .searchVideoBlock {
-            border-top: 1px solid rgba($color: #000000, $alpha: 0.3);
-            padding: 30px 0 0;
-            margin: 30px 0 0;
+        // grid-template-columns: 300px 300px;
+        &>a {
+            width: 100%;
             display: flex;
-            // align-items: center;
-
-            // flex-direction: row;
-
-            .videoBlock__thumbnail {
-                width: 250px;
-            }
         }
+
+        .videoBlock__thumbnail {
+            width: 350px;
+            margin-right: 10px;
+        }
+
+        .videoBlock__info {
+            display: flex;
+            flex-direction: column;
+
+            .videoBlock__title {
+                width: 3fr;
+                font-weight: 800;
+                font-size: 1rem;
+            }
+
+            .creator {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                width: 200px !important;
+
+                a {
+
+                    position: relative !important;
+                }
+            }
+
+            .views {
+                display: flex;
+                flex-direction: row;
+
+            }
+
+        }
+
+
+
+
     }
+
+    // .search__videos {
+    //     width: 100%;
+    //     display: grid;
+    //     grid-template-columns: 1fr;
+
+    //     .searchVideoBlock {
+    //         border-top: 1px solid rgba($color: #000000, $alpha: 0.3);
+    //         padding: 30px 0 0;
+    //         margin: 30px 0 0;
+    //         display: flex;
+    //         // align-items: center;
+
+    //         // flex-direction: row;
+
+    //         .videoBlock__thumbnail {
+    //             width: 250px;
+    //         }
+    //     }
+    // }
 }
