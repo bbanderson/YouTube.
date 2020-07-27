@@ -1,6 +1,7 @@
 const path = require("path");
 const extractCSS = require("extract-text-webpack-plugin");
 const autoprefixer = require("autoprefixer");
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const mode = process.env.WEBPACK_ENV;
 
@@ -15,17 +16,14 @@ const config = {
       // Rules for ES6 -> JS
       {
         test: /\.(js)$/,
-        use: [
-          {
-            loader: "babel-loader",
-          },
-        ],
+        use: [{
+          loader: "babel-loader",
+        }, ],
       },
       // Rules for SCSS -> CSS
       {
         test: /\.(scss)$/, // webpack이 scss 파일을 찾도록 한다. scss 파일에 한해 config 적용시킨다
-        use: extractCSS.extract([
-          {
+        use: extractCSS.extract([{
             loader: "css-loader", // webpack이 css를 이해할 수 있도록 가르쳐준다. 여기서 추출된 순수 css를 가지고 전송한다.
           },
           {
@@ -48,7 +46,7 @@ const config = {
     path: OUTPUT_DIR,
     filename: "[name].js",
   },
-  plugins: [new extractCSS("styles.css")],
+  plugins: [new extractCSS("styles.css"), new FaviconsWebpackPlugin('/static/favicon.ico')],
 };
 
 module.exports = config;
