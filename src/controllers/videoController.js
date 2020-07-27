@@ -243,7 +243,8 @@ export const postAddComment = async (req, res) => {
     res.json({
       wroteUser,
       avatarUrl: req.user.avatarUrl,
-      loggedUser: user
+      loggedUser: user,
+      newCommentId: newComment.id
     });
   } catch (error) {
     res.status(400);
@@ -255,16 +256,22 @@ export const postAddComment = async (req, res) => {
 export const postDeleteComment = async (req, res) => {
   const {
     body: {
-      commentId,
+      deleteCommentId,
       videoId
     },
     params: {
       id
     }
   } = req;
-  console.log("Deleted comment Id : ", commentId);
   try {
-    await Comment.findByIdAndRemove(commentId);
+    await Comment.findByIdAndRemove(deleteCommentId, (error, response) => {
+      if (error) {
+        console.error(error)
+      } else {
+        console.log(response)
+        console.log("Deleted comment Id : ", deleteCommentId);
+      }
+    });
     // const video = await Video.findById(id).populate("comments").populate("creator");
     // console.log("Wanna delete vid : ", video);
     // video.comments = video.comments.filter(id => {

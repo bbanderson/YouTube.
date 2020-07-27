@@ -1,4 +1,7 @@
 import axios from "axios";
+import {
+    initDelete
+} from "./deleteComment";
 
 const addCommentForm = document.querySelector("#jsAddComment");
 const commentList = document.querySelector(".video__comments-list");
@@ -10,7 +13,7 @@ const commentNumber = document.getElementById("jsCommentNumber");
 let img = new Image();
 let imgUrl = "";
 
-const addComment = (comment, commentCreatorData) => {
+const addComment = (comment, commentCreatorData, loggedUser, newCommentId) => {
 
     const newLI = document.createElement("li");
     newLI.className = "comment";
@@ -22,6 +25,7 @@ const addComment = (comment, commentCreatorData) => {
     padding: 15px 5px 10px 0;
     border-radius: 10px;
     border: 0;
+    width: 100%;
     background-color: rgb(243, 241, 176);
     font-size: 100%;
     font: inherit;
@@ -95,7 +99,9 @@ const addComment = (comment, commentCreatorData) => {
     font-size: 100%;
     font: inherit;
     font-size: 15px;
-    vertical-align: baseline;">${comment}</span></div>`;
+    vertical-align: baseline;">${comment}</span></div>
+    <span class="jsDeleteComment">
+        <button id="${newCommentId}" class="deleteBtn">Delete</button></span>`;
     newList.prepend(newLI);
 
     // Image Style Backup
@@ -160,10 +166,14 @@ const sendComment = async (comment) => {
         .then((response) => {
             makeImg(response.data.avatarUrl);
             const commentCreatorData = response.data.wroteUser;
-            // console.log(commentData)
-            addComment(comment, commentCreatorData);
+            const loggedUser = response.data.loggedUser;
+            const newCommentId = response.data.newCommentId;
+            // console.log(commentCreatorData, loggedUser, newCommentId)
             if (response.status === 200) {
                 console.log("Success : Uploaded a new comment");
+                addComment(comment, commentCreatorData, loggedUser, newCommentId);
+                const deleteBtn = document.querySelectorAll(".deleteBtn");
+                initDelete(deleteBtn);
             }
         })
         .catch((error) => {

@@ -19,6 +19,7 @@ import passport from "passport";
 import "./passport";
 import apiRouter from "./routers/apiRouter";
 import flash from "express-flash";
+import favicon from "serve-favicon";
 const app = express();
 const CookieStore = MongoStore(session);
 app.use(helmet());
@@ -50,6 +51,7 @@ app.use(routes.home, globalRouter);
 app.use("/uploads", express.static("uploads"));
 // app.use("/static", express.static("static")); // "/static" route가 호출되면 "static" 폴더를 찾아가도록 함
 app.use("/static", express.static(path.join(__dirname, "static")));
+app.use(favicon(path.join(__dirname, "static", "favicon.ico")));
 app.use(routes.users, userRouter);
 app.use(routes.videos, videoRouter);
 app.use(routes.api, apiRouter);

@@ -3,10 +3,10 @@ mixin recommendBlock(video={})
     a(href=routes.videoDetail(video.id))
       video.videoBlock__thumbnail(src=video.videoFile, controls=false, preload="metadata")
       .videoBlock__info
-        if video.title.length > 15
+        if video.title.length > 30
           .videoBlock__title=video.title
         else
-          .videoBlock__title=`${String(video.title).slice(0,16)}...`
+          .videoBlock__title=`${String(video.title).slice(0,30)}...`
         .creator(href=routes.userDetail(video.creatorID))=video.creatorName
         .views
           span.videoBlock__views 조회수 #{video.views}회
