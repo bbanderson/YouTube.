@@ -1,7 +1,6 @@
 const path = require("path");
 const extractCSS = require("extract-text-webpack-plugin");
 const autoprefixer = require("autoprefixer");
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const mode = process.env.WEBPACK_ENV;
 
@@ -46,7 +45,7 @@ const config = {
     path: OUTPUT_DIR,
     filename: "[name].js",
   },
-  plugins: [new extractCSS("styles.css"), new FaviconsWebpackPlugin('/static/favicon.ico')],
+  plugins: [new extractCSS("styles.css")],
 };
 
 module.exports = config;
