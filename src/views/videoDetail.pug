@@ -49,19 +49,27 @@ block content
                 if video.creator.name
                   a.author(href=routes.userDetail(video.creator.id))
                     p.creatorName=video.creator.name
-                  p.creatorSubscribers=`구독자 ${video.creator.subscribe.length}명`
+                  span.creatorSubscribers 구독자&nbsp;
+                    span#jsFollowerNumber=followers.length
+                  span.creatorSubscribers 명
                 else
                   a.author(href=routes.userDetail(video.creator.id))
                     p.creatorName=video.creator.email
-                  p.creatorSubscribers=`구독자 ${video.creator.subscribe.length}명`
+                  span.creatorSubscribers 구독자&nbsp;
+                    span#jsFollowerNumber=followers.length
+                  span.creatorSubscribers 명
             .video__description-creator-col
               .video__description-edit
                 if loggedUser && video.creator.id === loggedUser.id
                   button
                     a(href=routes.editVideo(video.id)) Edit Video
                 else
-                  button.subscribe#jsSubscribe
-                    span(id=`${video.creator.id}`) Subscribe
+                  if isFollowing
+                    button.unsubscribe#jsSubscribe
+                      span(id=`${video.creator.id}`) Unsubscribe
+                  else
+                    button.subscribe#jsSubscribe
+                      span(id=`${video.creator.id}`) Subscribe
           p.video__description__text=video.description
       .video__comments
         if video.comments.length === 1

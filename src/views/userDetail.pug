@@ -18,7 +18,9 @@ block content
                             span=String(user.name[0]).toUpperCase() 
                 .text
                     h1.profile__username=user.name
-                    p.creatorSubscribers#jsSubscribe=`구독자 ${user.subscribe.length}명`
+                    span.creatorSubscribers 구독자&nbsp;
+                        span#jsFollowerNumber=followers.length
+                    span.creatorSubscribers 명
             if loggedUser && user.id === loggedUser.id
                 .edit-buttons
                     a(href=`/users${routes.editProfile}`)
@@ -30,6 +32,13 @@ block content
                     a(href=routes.logout)
                         button.user-edit.logout
                             span Logout
+            else
+                if isFollowing
+                    button.unsubscribe#jsSubscribe
+                        span(id=`${user.id}`) Unsubscribe
+                else
+                    button.subscribe#jsSubscribe
+                        span(id=`${user.id}`) Subscribe
         //- if loggedUser && loggedUser.id === user
     .uploaded-videos
         each item in user.videos.reverse()

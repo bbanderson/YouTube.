@@ -225,10 +225,22 @@ export const userDetail = async (req, res) => {
     for (let i = 0; i < user.videos.length; i++) {
       console.log("This USER's video id : ", user.videos[i]["_id"]);
     }
+    const followings = await Subscribe.find({
+      requester: req.user.id
+    })
+    const isFollowing = followings.find(item => String(item.target) === String(user.id))
+    console.log("👍 Is Following : ", isFollowing)
+
+    const followers = await Subscribe.find({
+      target: user.id
+    })
     // console.log("This USER's video id : ", user.videos)
     res.render("userDetail", {
       siteName: `${user.name} - `,
       user,
+      followings,
+      followers,
+      isFollowing
     });
   } catch (error) {
     req.flash("error", "User not found");
@@ -410,6 +422,9 @@ export const subscribe = async (req, res) => {
       targetUser.subscribe.push(newSubscribe.id);
       console.log(`✅ New subscribe document ID : ${newSubscribe.id}`);
       currentUser.save();
+      res.json({
+        "subscribe": true
+      })
     } else {
       console.log("DELETE IT")
       const prevSubscribeDocument = await currentUser.subscribe.find(item => String(item.target) === String(targetId));
@@ -423,6 +438,9 @@ export const subscribe = async (req, res) => {
           console.log("✅ Deleted subscribe document's ID : ", prevSubscribeDocument._id);
         }
       });
+      res.json({
+        "subscribe": false
+      })
     }
     // if (currentUser.subscribe)
     // res.json(currentUser);

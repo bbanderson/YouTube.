@@ -3,6 +3,7 @@ import routes from "../routes";
 import Video from "../models/Video";
 import User from "../models/User";
 import Comment from "../models/Comment";
+import Subscribe from "../models/Subscribe";
 import {
   s3
 } from "../middlewares";
@@ -93,6 +94,22 @@ export const videoDetail = async (req, res) => {
       .populate("videos")
       .populate("comments").populate("subscribe");
     console.log("This video : ", video);
+
+    const followings = await Subscribe.find({
+      requester: req.user.id
+    })
+    const isFollowing = followings.find(item => String(item.target) === String(video.creator.id))
+    console.log("👍 Is Following : ", isFollowing)
+    // const result = followings.map(item => {
+    //   if (item.target === video.creator.id) {
+    //     return true;
+    //   }
+    // })
+    console.log("My Followings : ", followings);
+    // console.log("RESULT : ", result);
+    const followers = await Subscribe.find({
+      target: video.creator.id
+    })
     // const videoCreatorFollowers = video.creator.subscribe.
     // const charSet = '|';
     // const index = charSet.length;
@@ -121,6 +138,9 @@ export const videoDetail = async (req, res) => {
       createdAt: date,
       recommendVideos,
       commentData: [],
+      followings,
+      followers,
+      isFollowing
     });
   } catch (error) {
     console.log("Error on video detail page : ", error);
