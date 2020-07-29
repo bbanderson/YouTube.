@@ -6,6 +6,7 @@ dotenv.config();
 import "./models/Video";
 import "./models/Comment";
 import "./models/User";
+import "./models/Subscribe";
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>

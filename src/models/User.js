@@ -8,6 +8,10 @@ const UserSchema = new mongoose.Schema({
   facebookId: Number,
   githubId: Number,
   kakaoId: Number,
+  subscribe: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Subscribe"
+  }],
   comments: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Comment"

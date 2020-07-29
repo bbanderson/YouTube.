@@ -38,7 +38,7 @@ block content
         .video__description
           .video__description-creator
             .video__description-creator-col
-              .video__description__avatar
+              a.video__description__avatar(href=routes.userDetail(video.creator.id))
                 if video.creator.avatarUrl
                   img.avatar(src=video.creator.avatarUrl)
                 else
@@ -48,15 +48,20 @@ block content
               .video__description__author
                 if video.creator.name
                   a.author(href=routes.userDetail(video.creator.id))
-                    p=video.creator.name
+                    p.creatorName=video.creator.name
+                  p.creatorSubscribers=`구독자 ${video.creator.subscribe.length}명`
                 else
                   a.author(href=routes.userDetail(video.creator.id))
-                    p=video.creator.email
+                    p.creatorName=video.creator.email
+                  p.creatorSubscribers=`구독자 ${video.creator.subscribe.length}명`
             .video__description-creator-col
               .video__description-edit
                 if loggedUser && video.creator.id === loggedUser.id
                   button
                     a(href=routes.editVideo(video.id)) Edit Video
+                else
+                  button.subscribe#jsSubscribe
+                    span(id=`${video.creator.id}`) Subscribe
           p.video__description__text=video.description
       .video__comments
         if video.comments.length === 1

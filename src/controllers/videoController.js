@@ -91,8 +91,9 @@ export const videoDetail = async (req, res) => {
     const video = await Video.findById(id)
       .populate("creator")
       .populate("videos")
-      .populate("comments");
+      .populate("comments").populate("subscribe");
     console.log("This video : ", video);
+    // const videoCreatorFollowers = video.creator.subscribe.
     // const charSet = '|';
     // const index = charSet.length;
     // const randomQuery = charSet[Math.floor(Math.random() * index)]

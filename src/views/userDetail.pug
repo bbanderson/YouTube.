@@ -10,12 +10,15 @@ block content
             //- img.bg(src=loggedUser.avatarUrl)
         .user-profile__header
             .identity
-                if user.avatarUrl
-                    img.avatar(src=user.avatarUrl)
-                else
-                    .avatar
-                        span=String(user.name[0]).toUpperCase()
-                h1.profile__username=user.name
+                .image
+                    if user.avatarUrl
+                        img.avatar(src=user.avatarUrl)
+                    else
+                        .avatar
+                            span=String(user.name[0]).toUpperCase() 
+                .text
+                    h1.profile__username=user.name
+                    p.creatorSubscribers#jsSubscribe=`구독자 ${user.subscribe.length}명`
             if loggedUser && user.id === loggedUser.id
                 .edit-buttons
                     a(href=`/users${routes.editProfile}`)

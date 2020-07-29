@@ -1,6 +1,8 @@
 import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
+import Subscribe from "../models/Subscribe";
+import mongoose from "mongoose";
 
 export const getJoin = (req, res) =>
   res.render("join", {
@@ -143,8 +145,8 @@ export const postFbLogin = (req, res) => {
 // Kakao Login
 export const kakaoLogin = passport.authenticate("kakao", {
   failureFlash: "Failed",
-  successFlash: "Success"
-})
+  successFlash: "Success",
+});
 
 export const kakaoLoginCallback = async (
   accessToken,
@@ -162,7 +164,7 @@ export const kakaoLoginCallback = async (
       },
       kakao_account: {
         email
-      }
+      },
     },
   } = profile;
   try {
@@ -197,7 +199,6 @@ export const postkakaoLogin = (req, res) => {
   res.redirect(routes.home);
 };
 
-
 export const logout = (req, res) => {
   req.flash("info", "Logged out.");
   req.logout();
@@ -216,11 +217,13 @@ export const userDetail = async (req, res) => {
     },
   } = req;
   try {
-    const user = await User.findById(id).populate("videos").populate("comments");
+    const user = await User.findById(id)
+      .populate("videos")
+      .populate("comments").populate("subscribe");
     console.log("User info you are looking at this page : ", user);
     // console.log("REQ.USER : ", req.user)
     for (let i = 0; i < user.videos.length; i++) {
-      console.log("This USER's video id : ", user.videos[i]["_id"])
+      console.log("This USER's video id : ", user.videos[i]["_id"]);
     }
     // console.log("This USER's video id : ", user.videos)
     res.render("userDetail", {
@@ -236,7 +239,7 @@ export const userDetail = async (req, res) => {
 export const getMe = (req, res) => {
   res.render("userDetail", {
     siteName: "YouTube Studio - ",
-    user: req.user
+    user: req.user,
   });
 };
 
@@ -270,7 +273,7 @@ export const postEditProfile = async (req, res) => {
 
 export const getChangePassword = (req, res) => {
   res.render("changePassword", {
-    siteName: "Change Password - "
+    siteName: "Change Password - ",
   });
 };
 
@@ -298,3 +301,135 @@ export const postChangePassword = async (req, res) => {
     res.redirect(`/users${routes.changePassword}`);
   }
 };
+
+// export const subscribe = async (req, res) => {
+//   const {
+//     body: {
+//       targetId
+//     },
+//     user,
+//   } = req;
+//   console.log(targetId);
+//   try {
+//     const target = await User.findById(targetId);
+//     let followersList = target.followers;
+//     let followingList = req.user.following;
+//     console.log(target);
+//     let index = 0;
+//     const modifyList = (index, arr) => {
+//       const arr1 = arr.slice(0, index);
+//       const arr2 = arr.slice(index + 1);
+//       // followersList = [...arr1, ...arr2];
+//       // target.followers = followersList;
+//       followingList = [...arr1, ...arr2];
+//       // target.save();
+//     };
+//     if (followingList.length === 0) {
+//       followingList.push(targetId);
+//       user.save();
+//       res.json(followingList);
+//     } else {
+
+//       for (let i = 0; i < followingList.length; i++) {
+//         if (followingList[i] === user.id) {
+//           index = i;
+//           modifyList(index, followingList);
+//         } else {
+//           // If user is not subscribing yet, Subscribe it
+//           // target.followers.push(req.user.id);
+//           followingList.push(targetId);
+//           req.user.save();
+//           // followersList.push(req.user.id)
+//         }
+//       }
+//     }
+//     // for (let i = 0; i < followersList.length; i++) {
+//     //   // If user is subscribing already, Unsubscribe it
+//     // }
+//     // target.save();
+//     res.json(followingList);
+//     // if (!followerObj[user.id]) {
+//     //   console.log("You are going to subscribe this user : ", target);
+//     //   target.update()
+//     //   res.json({
+//     //     target,
+//     //     status: "start subscribing"
+//     //   });
+//     // } else {
+//     //   console.log("You are going to unsubscribe this user : ", target);
+//     //   // followerObj[user.id] = null;
+//     //   const key = user.id
+//     //   await User.findOneAndUpdate({
+//     //     _id: targetId
+//     //   }, {
+//     //     key: null
+//     //   })
+//     //   target.save();
+//     //   res.json({
+//     //     target,
+//     //     status: "start unsubscribing"
+//     //   });
+//     // }
+//   } catch (error) {
+//     res.status(400);
+//     console.error(error);
+//   } finally {
+//     res.end();
+//   }
+// };
+
+export const subscribe = async (req, res) => {
+  const {
+    body: {
+      targetId
+    },
+    user
+  } = req;
+  // for (let i = 0; i < req.user.following.length; i++) {
+  //   req.user.following.pop();
+  // }
+  // req.user.save();
+  // res.end();
+  try {
+    const currentUser = await User.findById(user.id).populate("subscribe");
+    const targetUser = await User.findById(targetId).populate("subscribe");
+    const myFollowings = await Subscribe.find({
+      requester: user.id
+    }).populate("user");
+    console.log(myFollowings)
+    const item = myFollowings.find(item => String(item.target) === String(targetId))
+    // const isFollwing = myFollowings.includes(targetId);
+    // currentUser.save();
+    if (!item) {
+      console.log(`💖 New Subscribe : ${currentUser.id} -> ${targetId}`);
+      const newSubscribe = await Subscribe.create({
+        requester: user.id,
+        target: targetId
+      });
+      currentUser.subscribe.push(newSubscribe.id);
+      targetUser.subscribe.push(newSubscribe.id);
+      console.log(`✅ New subscribe document ID : ${newSubscribe.id}`);
+      currentUser.save();
+    } else {
+      console.log("DELETE IT")
+      const prevSubscribeDocument = await currentUser.subscribe.find(item => String(item.target) === String(targetId));
+      console.log(prevSubscribeDocument);
+      await Subscribe.findByIdAndRemove(prevSubscribeDocument._id, (error, response) => {
+        if (error) {
+          console.error(error);
+        } else {
+          // console.log(response);
+          console.log(`👏 Unsubscribe : ${currentUser.id} -> ${targetId}`)
+          console.log("✅ Deleted subscribe document's ID : ", prevSubscribeDocument._id);
+        }
+      });
+    }
+    // if (currentUser.subscribe)
+    // res.json(currentUser);
+  } catch (error) {
+    res.status(400);
+    console.error(error);
+  } finally {
+    res.end();
+  }
+}
