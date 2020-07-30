@@ -70,6 +70,8 @@ block content
                   else
                     button.subscribe#jsSubscribe
                       span(id=`${video.creator.id}`) Subscribe
+                      //- if loggedUser
+                      //-   input#jsCheckLogin(type="hidden", value=loggedUser.name)
           p.video__description__text=video.description
       .video__comments
         if video.comments.length === 1

@@ -8,4 +8,7 @@ mixin userBlock(user={})
                    span.initialText #{user.name[0].toUpperCase()}
         .info
             a.userName(href=routes.userDetail(user.id)) #{user.name}
+            span.creatorSubscribers 구독자&nbsp;
+                span#jsFollowerNumber=user.followers.length
+            span.creatorSubscribers 명
             span.videoCount 동영상 #{user.videoCount}개

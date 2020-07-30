@@ -38,7 +38,7 @@ export const search = async (req, res) => {
         $regex: searchingBy,
         $options: "i",
       },
-    }).populate("videos");
+    }).populate("videos").populate("subscribe");
     console.log("Search results on Users : ", users);
   } catch (error) {}
   res.render("search", {
@@ -94,18 +94,21 @@ export const videoDetail = async (req, res) => {
       .populate("videos")
       .populate("comments").populate("subscribe");
     console.log("This video : ", video);
-
-    const followings = await Subscribe.find({
-      requester: req.user.id
-    })
-    const isFollowing = followings.find(item => String(item.target) === String(video.creator.id))
-    console.log("👍 Is Following : ", isFollowing)
+    let followings = [];
+    let isFollowing = false;
+    if (req.user) {
+      followings = await Subscribe.find({
+        requester: req.user.id
+      })
+      isFollowing = followings.find(item => String(item.target) === String(video.creator.id))
+      console.log("👍 Is Following : ", isFollowing)
+      console.log("My Followings : ", followings);
+    }
     // const result = followings.map(item => {
     //   if (item.target === video.creator.id) {
     //     return true;
     //   }
     // })
-    console.log("My Followings : ", followings);
     // console.log("RESULT : ", result);
     const followers = await Subscribe.find({
       target: video.creator.id

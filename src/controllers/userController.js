@@ -215,6 +215,7 @@ export const userDetail = async (req, res) => {
     params: {
       id
     },
+
   } = req;
   try {
     const user = await User.findById(id)
@@ -225,11 +226,15 @@ export const userDetail = async (req, res) => {
     for (let i = 0; i < user.videos.length; i++) {
       console.log("This USER's video id : ", user.videos[i]["_id"]);
     }
-    const followings = await Subscribe.find({
-      requester: req.user.id
-    })
-    const isFollowing = followings.find(item => String(item.target) === String(user.id))
-    console.log("👍 Is Following : ", isFollowing)
+    let followings = [];
+    let isFollowing = false;
+    if (req.user) {
+      followings = await Subscribe.find({
+        requester: req.user.id
+      })
+      isFollowing = followings.find(item => String(item.target) === String(user.id))
+      console.log("👍 Is Following : ", isFollowing)
+    }
 
     const followers = await Subscribe.find({
       target: user.id
@@ -393,7 +398,8 @@ export const postChangePassword = async (req, res) => {
 export const subscribe = async (req, res) => {
   const {
     body: {
-      targetId
+      targetId,
+      isLogin
     },
     user
   } = req;
@@ -403,45 +409,53 @@ export const subscribe = async (req, res) => {
   // req.user.save();
   // res.end();
   try {
-    const currentUser = await User.findById(user.id).populate("subscribe");
-    const targetUser = await User.findById(targetId).populate("subscribe");
-    const myFollowings = await Subscribe.find({
-      requester: user.id
-    }).populate("user");
-    console.log(myFollowings)
-    const item = myFollowings.find(item => String(item.target) === String(targetId))
-    // const isFollwing = myFollowings.includes(targetId);
-    // currentUser.save();
-    if (!item) {
-      console.log(`💖 New Subscribe : ${currentUser.id} -> ${targetId}`);
-      const newSubscribe = await Subscribe.create({
-        requester: user.id,
-        target: targetId
-      });
-      currentUser.subscribe.push(newSubscribe.id);
-      targetUser.subscribe.push(newSubscribe.id);
-      console.log(`✅ New subscribe document ID : ${newSubscribe.id}`);
-      currentUser.save();
-      res.json({
-        "subscribe": true
-      })
+    if (user) {
+
+      const currentUser = await User.findById(user.id).populate("subscribe");
+      const targetUser = await User.findById(targetId).populate("subscribe");
+      const myFollowings = await Subscribe.find({
+        requester: user.id
+      }).populate("user");
+      console.log(myFollowings)
+      const item = myFollowings.find(item => String(item.target) === String(targetId))
+      // const isFollwing = myFollowings.includes(targetId);
+      // currentUser.save();
+      if (!item) {
+        console.log(`💖 New Subscribe : ${currentUser.id} -> ${targetId}`);
+        const newSubscribe = await Subscribe.create({
+          requester: user.id,
+          target: targetId
+        });
+        currentUser.subscribe.push(newSubscribe.id);
+        targetUser.subscribe.push(newSubscribe.id);
+        console.log(`✅ New subscribe document ID : ${newSubscribe.id}`);
+        currentUser.save();
+        res.json({
+          "subscribe": true
+        })
+      } else {
+        console.log("DELETE IT")
+        const prevSubscribeDocument = await currentUser.subscribe.find(item => String(item.target) === String(targetId));
+        console.log(prevSubscribeDocument);
+        await Subscribe.findByIdAndRemove(prevSubscribeDocument._id, (error, response) => {
+          if (error) {
+            console.error(error);
+          } else {
+            // console.log(response);
+            console.log(`👏 Unsubscribe : ${currentUser.id} -> ${targetId}`)
+            console.log("✅ Deleted subscribe document's ID : ", prevSubscribeDocument._id);
+          }
+        });
+        res.json({
+          "subscribe": false
+        })
+      }
     } else {
-      console.log("DELETE IT")
-      const prevSubscribeDocument = await currentUser.subscribe.find(item => String(item.target) === String(targetId));
-      console.log(prevSubscribeDocument);
-      await Subscribe.findByIdAndRemove(prevSubscribeDocument._id, (error, response) => {
-        if (error) {
-          console.error(error);
-        } else {
-          // console.log(response);
-          console.log(`👏 Unsubscribe : ${currentUser.id} -> ${targetId}`)
-          console.log("✅ Deleted subscribe document's ID : ", prevSubscribeDocument._id);
-        }
-      });
       res.json({
-        "subscribe": false
+        subscribe: "No Login"
       })
     }
+
     // if (currentUser.subscribe)
     // res.json(currentUser);
   } catch (error) {

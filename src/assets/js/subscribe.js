@@ -2,7 +2,7 @@ import axios from "axios";
 const subscribe = document.getElementById("jsSubscribe");
 const followerNumber = document.getElementById("jsFollowerNumber");
 
-const paintUI = (subscribeStatus, oppositeID) => {
+const paintSubscribe = (subscribeStatus, oppositeID) => {
     if (subscribeStatus) {
         // Current : Subscribe the creator => Need to change btn to be grey
         subscribe.classList.remove("subscribe");
@@ -17,14 +17,38 @@ const paintUI = (subscribeStatus, oppositeID) => {
     }
 }
 
+const leadLogin = () => {
+    const loginLink = document.createElement("a");
+    loginLink.href = "/login";
+    loginLink.click();
+}
+
 const handleSubscribeBtn = async () => {
     const targetId = subscribe.querySelector("span")["id"];
+    // const loginStatus = document.getElementById("jsCheckLogin");
+    // const isLogin = loginStatus["value"];
     axios.post(`/api/${targetId}/subscribe`, {
-        targetId
+        targetId,
+        // isLogin
     }).then(response => {
         if (response.status === 200) {
             console.log("Subscribe response : ", response);
-            paintUI(response.data.subscribe, targetId);
+            const loginStatus = response.data.subscribe
+            if (loginStatus === "No Login") {
+                console.log("Need to login");
+                leadLogin();
+            } else {
+                paintSubscribe(loginStatus, targetId);
+            }
+            // else {
+            //     console.log("THIS")
+            //     axios.get(`/login`).then(response => {
+
+            //     }).catch(error => {
+            //         console.error(error)
+            //     });
+
+            // }
         }
     }).catch(error => {
         console.error("Error on subscribe : ", error);

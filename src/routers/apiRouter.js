@@ -9,6 +9,10 @@ import {
 import {
     subscribe
 } from "../controllers/userController";
+import {
+    onlyPrivate,
+    subscribeMiddleware
+} from "../middlewares";
 
 const apiRouter = express.Router()
 

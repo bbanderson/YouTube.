@@ -16,6 +16,7 @@ header.header
     a(href="https://nomadcoders.co", target="_blank")
       i.fas.fa-th    
     if !loggedUser
+      input#jsCheckLogin(type="hidden", value=null)
       a(href="https://github.com/bbanderson", target="_blank")
         i.fas.fa-ellipsis-v
       a.loginButton(href=routes.login)
@@ -23,6 +24,7 @@ header.header
         |로그인
     else
       i.fas.fa-bell
+      input#jsCheckLogin(type="hidden", value=loggedUser.name)
       a(href=routes.userDetail(loggedUser.id))
         if loggedUser.avatarUrl
           img.profile-image(src=loggedUser.avatarUrl, alt="", width="30")

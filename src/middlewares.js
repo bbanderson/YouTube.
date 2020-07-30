@@ -59,3 +59,11 @@ export const onlyPrivate = (req, res, next) => {
     res.redirect(routes.home);
   }
 };
+export const subscribeMiddleware = (req, res, next) => {
+  if (req.user) {
+    next();
+  } else {
+    console.log("This");
+    res.redirect(routes.login);
+  }
+};
