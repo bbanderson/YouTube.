@@ -13,8 +13,7 @@ header.header
   .header__menu
     a(href=`/videos${routes.upload}`)
       i.fas.fa-video
-    a(href="https://nomadcoders.co", target="_blank")
-      i.fas.fa-th    
+    i.fas.fa-th    
     if !loggedUser
       input#jsCheckLogin(type="hidden", value=null)
       a(href="https://github.com/bbanderson", target="_blank")

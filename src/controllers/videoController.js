@@ -227,6 +227,7 @@ export const deleteVideo = async (req, res) => {
     req.user.videos = afterDeleteVideos;
   } catch (error) {
     res.status(400);
+    console.log("Error on delete : ", error)
   }
   res.redirect(routes.home);
   // res.render("deleteVideo", {siteName: "Delete Video"})
