@@ -1,6 +1,6 @@
 import Subscribe from "../models/Subscribe";
 
-export const returnFollowData = (loggedUserInfo) => {
+export const returnFollowData = async (loggedUserInfo) => {
     let followings = [];
     let isFollowing = false;
     if (loggedUserInfo) {
