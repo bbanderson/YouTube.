@@ -23,6 +23,7 @@ Cloning Youtube in Full-Stack
 - [x] Home : Fetch all videos in Database
 - [x] Search : Search for videos or users by user's query in Database
 - [x] Preview : Hover over each video let users see preview on client-side
+- [x] Subscribe : Subscribe or unsubscribe in real-time
 
 ### User
 
