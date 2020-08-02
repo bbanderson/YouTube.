@@ -18,7 +18,18 @@
     "start": "PRODUCTION=true node build/init.js"
   },
   "browserslist": [
-    "cover 99.5%"
+    "cover 99.5%",
+    "> 1%",
+    "ie >= 8",
+    "edge >= 15",
+    "ie_mob >= 10",
+    "ff >= 45",
+    "chrome >= 45",
+    "safari >= 7",
+    "opera >= 23",
+    "ios >= 7",
+    "android >= 4",
+    "bb >= 10"
   ],
   "dependencies": {
     "@babel/cli": "^7.10.5",
