@@ -54,7 +54,7 @@ const fetchData = () => {
     const loadingImg = new Image();
     loadingImg.className = "comment"
     loadingImg.id = "loadingText"
-    loadingImg.src = "/static/loading.gif"
+    loadingImg.src = "https://bbantube.s3.ap-northeast-2.amazonaws.com/src/Ajax-Preloader.gif"
     loadingImg.width = "300"
     loadingImg.style = "justify-self: center;"
     commentsList = comments.querySelector("ul");
